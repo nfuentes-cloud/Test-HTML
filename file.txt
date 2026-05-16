@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programación Diaria - LATAM</title>
+    <style>
+        :root {
+            --primary: #1A202C; /* Tono más oscuro y táctico */
+            --accent: #38B2AC; 
+            --bg: #ffffff;
+            --light-gray: #f4f5f7;
+            --border: #cbd5e0;
+            --leader-color: #d69e2e;
+            --danger: #e53e3e;
+            --help: #dd6b20; 
+            --comment: #718096;
+        }
+
+        body, input, select, button, textarea {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-transform: uppercase;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        /* Barra superior general */
+        .top-bar {
+            display: flex; justify-content: space-between; margin-bottom: 10px;
+            background-color: var(--primary); padding: 10px 15px;
+            border-radius: 2px; color: white; align-items: center;
+        }
+
+        .btn-top {
+            width: 140px; height: 32px; font-size: 11px; padding: 0; font-weight: bold;
+            display: flex; align-items: center; justify-content: center; box-sizing: border-box;
+            border-radius: 2px; cursor: pointer; border: none;
+        }
+
+        .leader-wrapper { display: contents; } 
+        body:not(.team-leader-mode) .leader-only { display: none !important; }
+
+        /* Controles de vista y filtros locales */
+        .view-controls {
+            display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; 
+            background: #f8fafc; padding: 10px 15px; border-radius: 2px; 
+            border: 1px solid var(--border); align-items: center; justify-content: space-between;
+        }
+
+        /* ==========================================
+           PANEL DE CONTROL TEAM LEADER
+           ========================================== */
+        .header-controls {
+            background-color: #fffdfa; border: 1px solid #e2e8f0;
+            border-left: 4px solid var(--leader-color); padding: 15px;
+            border-radius: 2px; margin-bottom: 25px;
+        }
+
+        .leader-panel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px;
+        }
+
+        .leader-title { font-size: 1.1em; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        .leader-grid { display: flex; flex-direction: column; gap: 12px; }
+        .control-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+        input, select, button {
+            padding: 6px 10px; border: 1px solid var(--border);
+            border-radius: 2px; font-size: 11px; outline: none; box-sizing: border-box;
+        }
+        
+        input:focus, select:focus { border-color: var(--accent); }
+        input { flex: 1; min-width: 130px; }
+        input[type="time"] { min-width: auto; width: 90px; }
+        
+        button { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: 700; transition: all 0.2s; }
+        button:hover { opacity: 0.9; }
+        
+        .btn-accent { background-color: var(--accent); color: #fff;}
+        .btn-leader { background-color: var(--leader-color); color: #fff; }
+        .btn-clear { background-color: var(--danger); color: white; }
+        .btn-outline { background-color: #f8fafc; border: 1px solid var(--comment); color: var(--comment); }
+        .btn-outline:hover { background-color: var(--comment); color: white; }
+        .btn-danger-outline { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+        .btn-danger-outline:hover { background: var(--danger); color: white; }
+
+        /* Etiquetas de técnicos */
+        #tech-pills-container {
+            display: flex; flex-wrap: wrap; gap: 6px; width: 100%;
+            padding: 10px 0;
+        }
+
+        .tech-pill {
+            background-color: #edf2f7; color: var(--primary); border: 1px solid var(--border);
+            padding: 4px 10px; border-radius: 2px; font-size: 11px;
+            display: inline-flex; align-items: center; gap: 8px; font-weight: bold;
+        }
+        
+        .tech-pill span.tech-name { line-height: 1; }
+        
+        .tech-pill span.tech-remove { 
+            cursor: pointer; color: var(--comment); background: transparent; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 12px; transition: 0.2s; font-weight: bold;
+        }
+        .tech-pill span.tech-remove:hover { color: var(--danger); }
+
+        .document-header { font-size: 1.4em; font-weight: 800; margin-bottom: 25px; border-bottom: 3px solid var(--primary); padding-bottom: 8px; letter-spacing: 0.5px; }
+        
+        /* ==========================================
+           DISEÑO MINIMALISTA - AVIONES Y TAREAS
+           ========================================== */
+        .avion-section { 
+            margin-bottom: 20px; 
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+        }
+
+        .avion-title {
+            font-size: 1.1em; font-weight: bold; display: flex; align-items: stretch;
+            background: #edf2f7; border-bottom: 1px solid var(--border); flex-wrap: wrap;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .avion-title[style*="f0fbfb"] {
+            /* Override para actividades extra en JS */
+            background: #f0fbfb !important;
+            border-left: 4px solid var(--accent) !important;
+        }
+
+        .avion-info-main { flex: 1; min-width: 250px; padding: 10px 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+        
+        .avion-reg { color: var(--primary); font-size: 1.1em; }
+        .avion-pos { color: #fff; background: var(--primary); padding: 2px 6px; border-radius: 2px; font-size: 0.85em; font-weight: normal; letter-spacing: 0.5px; }
+        .avion-times { color: var(--primary); font-size: 0.85em; display: inline-block; background: #e2e8f0; padding: 2px 6px; border-radius: 2px; font-weight: normal; border: 1px solid var(--border); }
+        .avion-comment { font-size: 0.85em; color: var(--comment); font-weight: normal; font-style: italic; width: 100%; margin-top: 4px; }
+
+        .tango-link { color: #2b6cb0; text-decoration: none; cursor: pointer; font-weight: bold; padding: 1px 4px; transition: background 0.2s; border-radius: 2px; }
+        .tango-link:hover { background-color: #ebf8ff; text-decoration: underline; }
+
+        /* Estructura de lista para Tareas */
+        .task-item {
+            display: flex; align-items: flex-start;
+            padding: 10px 15px; border-bottom: 1px solid var(--light-gray);
+            background-color: transparent; transition: background-color 0.2s;
+        }
+        .task-item:last-child { border-bottom: none; }
+        .task-item:hover { background-color: #f8fafc; }
+
+        /* Indicadores minimalistas de prioridad/ayuda */
+        .task-item.priority { background-color: #fff5f5; border-left: 3px solid var(--danger); padding-left: 12px; }
+        .task-item.help-needed { background-color: #fffaf0; border-left: 3px solid var(--help); padding-left: 12px; }
+        .task-item.priority.help-needed { border-left: 3px solid var(--danger); background: linear-gradient(90deg, #fff5f5 0%, #fffaf0 100%); }
+
+        .priority-badge { color: var(--danger); font-weight: 800; font-size: 0.8em; border: 1px solid var(--danger); padding: 1px 4px; border-radius: 2px; margin-left: 6px; }
+        .help-badge { color: var(--help); font-weight: 800; font-size: 0.8em; border: 1px solid var(--help); padding: 1px 4px; border-radius: 2px; margin-left: 6px; }
+
+        .status-toggle {
+            width: 18px; height: 18px; min-width: 18px; min-height: 18px;
+            box-sizing: border-box; border: 2px solid var(--primary);
+            background-color: white; margin-right: 12px; margin-top: 2px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; color: transparent; font-size: 12px; transition: all 0.2s; user-select: none; border-radius: 2px;
+        }
+
+        .task-item.completed .status-toggle { background-color: var(--comment); border-color: var(--comment); color: white; }
+        .task-item.completed { background-color: #f8fafc; opacity: 0.6; }
+        .task-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .task-info { width: 100%; transition: all 0.3s ease; }
+        .task-item.completed .task-info, .task-item.completed .tango-link { text-decoration: line-through; color: var(--comment); }
+        .task-desc { font-weight: 600; font-size: 0.95em; line-height: 1.4; color: var(--primary); }
+        .task-techs { font-size: 0.8em; font-weight: 700; color: #4a5568; margin-top: 4px; display: inline-block; background: #edf2f7; padding: 2px 6px; border-radius: 2px; }
+        .task-comment { font-size: 0.85em; color: var(--comment); margin-top: 4px; font-style: italic; font-weight: 500; }
+
+        /* ==========================================
+           BOTONERAS TÁCTICAS
+           ========================================== */
+        .action-bar { 
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; 
+            align-items: stretch; width: 100%;
+        }
+        
+        .action-bar.avion-bar { margin-top: 0; justify-content: flex-end; width: auto; padding: 8px 10px; align-items: center; background: transparent; }
+
+        .action-btn {
+            padding: 4px 8px; font-size: 9px; font-weight: 800;
+            border-radius: 2px; border: 1px solid var(--border);
+            background: #ffffff; color: var(--comment);
+            cursor: pointer; transition: all 0.2s; 
+            display: inline-flex; align-items: center; justify-content: center;
+            text-align: center; letter-spacing: 0.5px;
+        }
+
+        .action-btn:hover { background: var(--light-gray); color: var(--primary); border-color: var(--primary); }
+        .action-btn.active-danger { background: var(--danger); color: white; border-color: var(--danger); }
+        .action-btn.active-help { background: var(--help); color: white; border-color: var(--help); }
+        .btn-highlight { color: var(--accent); border-color: var(--accent); background-color: #f0fbfb; }
+        .btn-highlight:hover { background-color: var(--accent); color: white; }
+
+        /* ==========================================
+           MODALS (VENTANAS FLOTANTES)
+           ========================================== */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(26, 32, 44, 0.85); backdrop-filter: blur(2px); }
+        
+        .modal-content {
+            background-color: var(--bg); margin: 8% auto; padding: 20px;
+            border: 1px solid var(--border); width: 90%; max-width: 480px; border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-height: 85vh; overflow-y: auto;
+        }
+        
+        .modal-header { font-weight: 800; font-size: 1.1em; margin-bottom: 15px; color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 8px; }
+        .modal-content input, .modal-content select { width: 100%; margin-bottom: 12px; box-sizing: border-box; }
+        .modal-row { display: flex; gap: 10px; }
+        .modal-row > * { flex: 1; }
+
+        .tech-grid {
+            display: flex; flex-wrap: wrap;
+            gap: 6px; max-height: 180px; overflow-y: auto; margin-bottom: 15px;
+        }
+
+        .tech-checkbox-label {
+            display: flex; align-items: center; justify-content: center;
+            background: #f8fafc; border: 1px solid var(--border); padding: 6px 12px;
+            border-radius: 2px; cursor: pointer; font-size: 10px; font-weight: 700;
+            transition: all 0.2s; user-select: none; color: var(--comment); text-align: center;
+        }
+
+        .tech-checkbox-label:hover { border-color: var(--primary); color: var(--primary); }
+        .tech-checkbox-label:has(input:checked) { 
+            border-color: var(--primary); background: var(--primary); color: white; 
+        }
+        .tech-checkbox-label input { display: none; }
+        .tech-checkbox-label span { word-wrap: break-word; white-space: normal; line-height: 1.2; }
+
+        .modal-footer { display: flex; gap: 8px; margin-top: 5px; padding-top: 15px; border-top: 1px solid var(--border); }
+        .btn-modal-action { flex: 1; padding: 10px 0; font-size: 11px; text-align: center; display: flex; justify-content: center; align-items: center; }
+
+        /* ==========================================
+           ESTILOS DE IMPRESIÓN (PDF) - ALTA PRECISIÓN
+           ========================================== */
+        @media print {
+            @page { size: letter; margin: 1cm; } .no-print { display: none !important; }
+            body { padding: 0; background-color: white; font-size: 11px; color: #000; }
+            .document-header { font-size: 1.2em; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid #000; }
+            
+            /* Evitar cortes entre bloques de aviones */
+            .avion-section { margin-bottom: 15px; border: 1px solid #000; page-break-inside: avoid; border-radius: 0; }
+            
+            .avion-title { 
+                background: #f0f0f0 !important; color: #000 !important; border-bottom: 1px solid #000; 
+                border-left: 4px solid #000 !important; padding: 6px 10px; font-size: 1em;
+                -webkit-print-color-adjust: exact; print-color-adjust: exact;
+            }
+            .avion-info-main { padding: 0; gap: 6px; }
+            .avion-pos { background: none; border: 1px solid #000; color: #000; padding: 1px 4px; }
+            .avion-times { background: none; border: 1px solid #000; color: #000; padding: 1px 4px; }
+            
+            .task-item { padding: 6px 10px; border-bottom: 1px solid #ccc; margin: 0; }
+            .task-item:last-child { border-bottom: none; }
+            .task-item.completed { opacity: 0.8; }
+            .task-item.completed .task-info { text-decoration: line-through; color: #555; }
+            .task-item.priority { border-left: 2px solid #000; }
+            .task-item.help-needed { border-left: 2px solid #555; }
+            
+            .priority-badge, .help-badge { border: 1px solid #000; color: #000; }
+            
+            .task-techs { background: none; border: 1px dotted #888; color: #000; padding: 1px 4px; }
+            .status-toggle { margin-top: 0px; width: 14px; min-width: 14px; height: 14px; min-height: 14px; font-size: 10px; border-color: #000; }
+            .task-item.completed .status-toggle { background-color: #000 !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .tango-link { text-decoration: none; color: #000; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="top-bar no-print">
+        <button type="button" id="btn-mode-toggle" class="btn-accent btn-top" onclick="toggleMode()">MODO TÉCNICO</button>
+        <button class="btn-top" onclick="window.print()" style="background-color: #4a5568; color:white;">🖨️ IMPRIMIR HOJA</button>
+    </div>
+
+    <div class="view-controls no-print">
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="font-size: 11px; font-weight: bold; color: var(--primary);">MODO DE VISTA:</span>
+            <select id="view-mode-select" onchange="changeViewMode()" style="min-width: 170px; font-weight: bold;">
+                <option value="default">✈️ POR AVIÓN (DEFAULT)</option>
+                <option value="time">🕒 POR HORA DE INICIO</option>
+                <option value="tech">👨‍🔧 AGRUPAR POR TÉCNICO</option>
+            </select>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="font-size: 11px; font-weight: bold; color: var(--primary);">MI FILTRO LOCAL:</span>
+            <select id="local-tech-filter" onchange="applyLocalFilter()" style="min-width: 160px;">
+                <option value="">TODOS LOS TÉCNICOS</option>
+            </select>
+            <button class="btn-outline" onclick="resetLocalFilter()" style="padding: 6px 10px; font-size: 10px;">RESTABLECER</button>
+        </div>
+    </div>
+
+    <div class="header-controls leader-only no-print">
+        <div class="leader-panel-header">
+            <div class="leader-title">⚙️ PANEL DE CONTROL TEAM LEADER</div>
+            <button class="btn-danger-outline" onclick="clearAllData()" style="padding: 6px 10px; font-size: 10px;">⚠️ BORRAR TODO</button>
+        </div>
+
+        <div class="leader-grid">
+            <div class="control-group">
+                <span style="font-size: 10px; font-weight: bold; color: var(--comment); width: 65px;">TURNO:</span>
+                <select id="in-turno" onchange="updateHeader()" style="max-width: 130px;">
+                    <option value="Turno Día">DÍA</option>
+                    <option value="Turno Tarde">TARDE</option>
+                    <option value="Turno Noche">NOCHE</option>
+                </select>
+                <input type="date" id="in-fecha" onchange="updateHeader()" style="max-width: 130px;">
+                <input type="text" id="in-jefe" placeholder="NOMBRE DEL TEAM LEADER" oninput="updateHeader()">
+            </div>
+            
+            <div class="control-group" style="margin-bottom: 5px;">
+                <span style="font-size: 10px; font-weight: bold; color: var(--comment); width: 65px;">TÉCNICOS:</span>
+                <input type="text" id="in-new-tech" placeholder="NOMBRE DEL TECNICO" onkeypress="if(event.key === 'Enter') addTech()" style="max-width: 270px;">
+                <button class="btn-leader" onclick="addTech()">+ AGREGAR A LA LISTA</button>
+            </div>
+
+            <div id="tech-pills-container"></div>
+        </div>
+    </div>
+
+    <div id="print-area">
+        <div class="document-header" id="display-header">CARGANDO DATOS...</div>
+        <div id="aviones-container"></div>
+        <div class="leader-only no-print" style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn-leader" onclick="openAddAvionModal()" style="flex: 1; min-width: 200px; padding: 10px; font-size: 11px;">+ AGREGAR AVIÓN</button>
+            <button class="btn-leader" onclick="openAddActivityModal()" style="flex: 1; min-width: 200px; padding: 10px; font-size: 11px; background-color: var(--primary);">⭐ AGREGAR ACTIVIDAD EXTRA</button>
+        </div>
+    </div>
+</div>
+
+<div id="confirm-modal" class="modal">
+    <div class="modal-content" style="max-width: 350px; text-align: center;">
+        <div class="modal-header" style="border:none; margin-bottom:5px; color:var(--leader-color);">⚠️ CONFIRMACIÓN</div>
+        <div id="confirm-message" style="margin-bottom: 20px; font-size: 12px; font-weight: bold; color: var(--primary);">¿ESTÁS SEGURO?</div>
+        <div class="modal-footer" style="border:none; padding-top:0;">
+            <button class="btn-outline btn-modal-action" onclick="closeConfirmModal()">CANCELAR</button>
+            <button class="btn-leader btn-modal-action" id="confirm-yes-btn">CONFIRMAR</button>
+        </div>
+    </div>
+</div>
+
+<div id="prompt-modal" class="modal">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header" id="prompt-title" style="margin-bottom:10px; border:none; padding-bottom:0;">INGRESA LA NOTA</div>
+        <input type="text" id="prompt-input" autocomplete="off" placeholder="Escribe aquí... (Dejar en blanco para borrar)">
+        <div class="modal-footer">
+            <button class="btn-outline btn-modal-action" onclick="closePromptModal()">CANCELAR</button>
+            <button class="btn-leader btn-modal-action" id="prompt-save-btn">GUARDAR NOTA</button>
+        </div>
+    </div>
+</div>
+
+<div id="add-avion-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">✈️ AGREGAR NUEVO AVIÓN</div>
+        <input type="text" id="add-ac-reg" placeholder="MATRÍCULA (EJ: CC-BGM)" maxlength="6" oninput="formatMatricula(this)">
+        <div class="modal-row">
+            <input type="text" id="add-ac-wp" placeholder="WP (T00...)" maxlength="8">
+            <input type="text" id="add-ac-pos" placeholder="POSICIÓN">
+        </div>
+        <div class="modal-row">
+            <input type="time" id="add-ac-start" title="Inicio">
+            <input type="time" id="add-ac-end" title="Término">
+        </div>
+        <input type="text" id="add-ac-comment" placeholder="NOTA DEL AVIÓN (OPCIONAL)">
+        
+        <div class="modal-footer">
+            <button class="btn-outline btn-modal-action" onclick="closeModal('add-avion-modal')">CANCELAR</button>
+            <button class="btn-leader btn-modal-action" onclick="saveAddAvion()">GUARDAR AVIÓN</button>
+        </div>
+    </div>
+</div>
+
+<div id="add-activity-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header" style="color: var(--leader-color);">⭐ AGREGAR ACTIVIDAD EXTRA</div>
+        <input type="text" id="add-act-title" placeholder="TÍTULO (EJ: REUNIÓN, CURSO, INVENTARIO)">
+        <div class="modal-row">
+            <input type="time" id="add-act-start" title="Inicio">
+            <input type="time" id="add-act-end" title="Término">
+        </div>
+        <div style="font-size: 10px; font-weight: bold; color: var(--comment); margin-bottom: 6px;">ASIGNAR TÉCNICOS:</div>
+        <div class="tech-grid" id="add-act-techs"></div>
+        <div class="modal-footer">
+            <button class="btn-outline btn-modal-action" onclick="closeModal('add-activity-modal')">CANCELAR</button>
+            <button class="btn-leader btn-modal-action" onclick="saveAddActivity()" style="background-color: var(--primary);">GUARDAR ACTIVIDAD</button>
+        </div>
+    </div>
+</div>
+
+<div id="edit-avion-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header" id="edit-avion-header">✏️ EDITAR TIEMPOS</div>
+        <input type="text" id="edit-ac-reg" placeholder="MATRÍCULA" maxlength="6" oninput="formatMatricula(this)">
+        <div class="modal-row">
+            <input type="text" id="edit-ac-wp" placeholder="WP (T00...)" maxlength="8">
+            <input type="text" id="edit-ac-pos" placeholder="POSICIÓN">
+        </div>
+        <div class="modal-row">
+            <input type="time" id="edit-ac-start" title="Inicio">
+            <input type="time" id="edit-ac-end" title="Término">
+        </div>
+        <input type="text" id="edit-ac-comment" placeholder="NOTA (OPCIONAL)">
+        
+        <div class="modal-footer">
+            <button class="btn-danger-outline btn-modal-action" onclick="confirmDeleteAvion()">ELIMINAR</button>
+            <button class="btn-outline btn-modal-action" onclick="closeModal('edit-avion-modal')">CANCELAR</button>
+            <button class="btn-leader btn-modal-action" onclick="saveEditAvion()">GUARDAR</button>
+        </div>
+    </div>
+</div>
+
+<div id="add-task-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">📝 AGREGAR TAREA</div>
+        <input type="text" id="add-task-desc" placeholder="TÍTULO DE LA TAREA" oninput="handleTaskDescInput(this, 'add-task-tango')">
+        <input type="text" id="add-task-tango" placeholder="T00..." maxlength="8" oninput="autoFormatTango(this)">
+        
+        <div style="font-size: 10px; font-weight: bold; color: var(--comment); margin-bottom: 6px;">ASIGNAR TÉCNICOS:</div>
+        <div class="tech-grid" id="add-task-techs"></div>
+        
+        <div class="modal-footer">
+            <button class="btn-outline btn-modal-action" onclick="closeModal('add-task-modal')">CANCELAR</button>
+            <button class="btn-leader btn-modal-action" onclick="saveAddTask()">GUARDAR TAREA</button>
+        </div>
+    </div>
+</div>
+
+<div id="edit-task-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">✏️ EDITAR TAREA / ACTIVIDAD</div>
+        <input type="text" id="edit-task-desc" placeholder="TÍTULO DE LA TAREA" oninput="handleTaskDescInput(this, 'edit-task-tango')">
+        <input type="text" id="edit-task-tango" placeholder="T00..." maxlength="8" oninput="autoFormatTango(this)">
+        
+        <div style="font-size: 10px; font-weight: bold; color: var(--comment); margin-bottom: 6px;">TÉCNICOS ASIGNADOS:</div>
+        <div class="tech-grid" id="edit-task-techs"></div>
+        
+        <div class="modal-footer">
+            <button class="btn-danger-outline btn-modal-action" onclick="confirmDeleteTask()">ELIMINAR</button>
+            <button class="btn-outline btn-modal-action" onclick="closeModal('edit-task-modal')">CANCELAR</button>
+            <button class="btn-leader btn-modal-action" onclick="saveEditTask()">GUARDAR</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyADC1Wwcypek8g1gwOTcgqKskpqiTo0-oM",
+      authDomain: "programacion-diaria-3dddb.firebaseapp.com",
+      databaseURL: "https://programacion-diaria-3dddb-default-rtdb.firebaseio.com",
+      projectId: "programacion-diaria-3dddb",
+      storageBucket: "programacion-diaria-3dddb.firebasestorage.app",
+      messagingSenderId: "449926089536",
+      appId: "1:449926089536:web:052ba8ea546f4d39b708a5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // ⬇️⬇️⬇️ AGREGA LOS CORREOS AUTORIZADOS AQUÍ (EN MINÚSCULAS) ⬇️⬇️⬇️
+    const correosAutorizados = [
+        "ndfuentesa@gmail.com",
+        "nelson.fuentes@latam.com",
+        "hector.vargas@latam.com",
+        "richard.shenk@latam.com",
+        "pablo.monti@latam.com",
+        "marco.santelices@latam.com",
+        "pamela.perezs@latam.com",
+        "mauricio.munozv@latam.com"
+    ];
+    // ⬆️⬆️⬆️ ======================================================= ⬆️⬆️⬆️
+
+    const dbRefs = {
+        aviones: ref(db, 'mantenimiento/aviones'),
+        techs: ref(db, 'mantenimiento/techs'),
+        header: ref(db, 'mantenimiento/header')
+    };
+
+    let avionesData = [];
+    let shiftTechs = []; 
+    let isTeamLeader = false;
+    let editCurrentAvionId = null;
+    let editCurrentTaskId = null;
+    const MAINTENIX_URL = "https://maintenix.lan.com/maintenix/common/ToDoList.jsp";
+    const SESSION_EXPIRATION_MS = 12 * 60 * 60 * 1000;
+
+    // ESTADOS LOCALES DE VISTA Y FILTRO
+    let currentViewMode = localStorage.getItem('viewMode') || 'default';
+    let currentTechFilter = localStorage.getItem('techFilter') || '';
+    document.getElementById('view-mode-select').value = currentViewMode;
+
+    // --- MANEJO DE SESIÓN PERSISTENTE (12 HORAS) ---
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const userEmail = user.email.toLowerCase();
+            if (correosAutorizados.includes(userEmail)) {
+                let loginTime = localStorage.getItem('teamLeaderLoginTime');
+                if (!loginTime) {
+                    loginTime = Date.now().toString();
+                    localStorage.setItem('teamLeaderLoginTime', loginTime);
+                }
+
+                if ((Date.now() - parseInt(loginTime)) < SESSION_EXPIRATION_MS) {
+                    activateLeaderUI();
+                } else {
+                    signOut(auth).then(() => {
+                        localStorage.removeItem('teamLeaderLoginTime');
+                        deactivateLeaderUI();
+                    });
+                }
+            } else {
+                signOut(auth).then(() => {
+                    localStorage.removeItem('teamLeaderLoginTime');
+                    deactivateLeaderUI();
+                    showConfirm(`ACCESO DENEGADO.\nEl correo ${userEmail} no tiene permisos.`, null);
+                });
+            }
+        } else {
+            deactivateLeaderUI();
+        }
+    });
+
+    function activateLeaderUI() {
+        isTeamLeader = true;
+        document.body.classList.add('team-leader-mode');
+        const btnToggle = document.getElementById('btn-mode-toggle');
+        btnToggle.innerText = "MODO TEAM LEADER";
+        btnToggle.style.backgroundColor = "var(--leader-color)";
+        render();
+    }
+
+    function deactivateLeaderUI() {
+        isTeamLeader = false;
+        document.body.classList.remove('team-leader-mode');
+        const btnToggle = document.getElementById('btn-mode-toggle');
+        btnToggle.innerText = "MODO TÉCNICO";
+        btnToggle.style.backgroundColor = "var(--accent)";
+        render();
+    }
+
+    // --- SINCRONIZACIÓN EN TIEMPO REAL ---
+    onValue(dbRefs.aviones, (snapshot) => {
+        avionesData = snapshot.val() || [];
+        render();
+    });
+
+    onValue(dbRefs.techs, (snapshot) => {
+        shiftTechs = snapshot.val() || [];
+        renderTechPills();
+        updateTechFilterDropdown();
+    });
+
+    onValue(dbRefs.header, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            if (document.activeElement.id !== 'in-turno') document.getElementById('in-turno').value = data.turno || 'Turno Día';
+            if (document.activeElement.id !== 'in-fecha') document.getElementById('in-fecha').value = data.fecha || '';
+            if (document.activeElement.id !== 'in-jefe') document.getElementById('in-jefe').value = data.jefe || '';
+            
+            let fechaDisplay = "";
+            if(data.fecha) {
+                 fechaDisplay = new Date(data.fecha + 'T00:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
+            }
+            document.getElementById('display-header').innerText = `${data.turno || ''} ${fechaDisplay} ${data.jefe ? '- ' + data.jefe : ''}`;
+        } else {
+            document.getElementById('display-header').innerText = `CONFIGURAR TURNO`;
+        }
+    });
+
+    function saveData() { set(dbRefs.aviones, avionesData); }
+    function saveTechs() { set(dbRefs.techs, shiftTechs); }
+    function updateHeader() {
+        const turno = document.getElementById('in-turno').value;
+        const fecha = document.getElementById('in-fecha').value;
+        const jefe = document.getElementById('in-jefe').value.toUpperCase();
+        set(dbRefs.header, { turno, fecha, jefe });
+    }
+
+    // --- LÓGICA DE INTERFAZ ---
+    let confirmCallback = null;
+    function showConfirm(message, callback) {
+        document.getElementById('confirm-message').innerText = message;
+        confirmCallback = callback;
+        document.getElementById('confirm-modal').style.display = 'block';
+    }
+    function closeConfirmModal() { document.getElementById('confirm-modal').style.display = 'none'; confirmCallback = null; }
+    document.getElementById('confirm-yes-btn').onclick = function() { if(confirmCallback) confirmCallback(); closeConfirmModal(); };
+
+    let promptCallback = null;
+    function showPromptModal(title, defaultVal, callback) {
+        document.getElementById('prompt-title').innerText = title;
+        const input = document.getElementById('prompt-input');
+        input.value = defaultVal || "";
+        promptCallback = callback;
+        document.getElementById('prompt-modal').style.display = 'block';
+        setTimeout(() => input.focus(), 50);
+    }
+    function closePromptModal() { document.getElementById('prompt-modal').style.display = 'none'; promptCallback = null; }
+    document.getElementById('prompt-save-btn').onclick = function() {
+        if(promptCallback) promptCallback(document.getElementById('prompt-input').value.trim().toUpperCase());
+        closePromptModal();
+    };
+
+    function addTech() {
+        const input = document.getElementById('in-new-tech');
+        const name = input.value.trim().toUpperCase();
+        if (!name) return;
+        if (shiftTechs.includes(name)) return showConfirm("ESTE TÉCNICO YA ESTÁ EN LA LISTA.", null);
+        shiftTechs.push(name);
+        shiftTechs.sort(); input.value = '';
+        saveTechs();
+    }
+
+    function removeTech(index) {
+        showConfirm(`¿CONFIRMAS ELIMINAR A ${shiftTechs[index]} DEL TURNO?`, () => {
+            shiftTechs.splice(index, 1); saveTechs();
+        });
+    }
+
+    function renderTechPills() {
+        const container = document.getElementById('tech-pills-container'); container.innerHTML = '';
+        if(shiftTechs.length === 0) {
+            container.innerHTML = '<span style="font-size:10px; color:var(--comment); font-style:italic;">No hay técnicos registrados.</span>';
+            return;
+        }
+        shiftTechs.forEach((tech, index) => {
+            const pill = document.createElement('div'); pill.className = 'tech-pill';
+            pill.innerHTML = `<span class="tech-name">${tech}</span> <span class="tech-remove" onclick="removeTech(${index})" title="Eliminar">✖</span>`;
+            container.appendChild(pill);
+        });
+    }
+
+    function updateTechFilterDropdown() {
+        const select = document.getElementById('local-tech-filter');
+        select.innerHTML = '<option value="">TODOS LOS TÉCNICOS</option>';
+        shiftTechs.forEach(tech => {
+            const selected = tech === currentTechFilter ? 'selected' : '';
+            select.innerHTML += `<option value="${tech}" ${selected}>${tech}</option>`;
+        });
+    }
+
+    function changeViewMode() {
+        currentViewMode = document.getElementById('view-mode-select').value;
+        localStorage.setItem('viewMode', currentViewMode);
+        render();
+    }
+
+    function applyLocalFilter() {
+        currentTechFilter = document.getElementById('local-tech-filter').value;
+        localStorage.setItem('techFilter', currentTechFilter);
+        render();
+    }
+
+    function resetLocalFilter() {
+        currentTechFilter = '';
+        document.getElementById('local-tech-filter').value = '';
+        localStorage.setItem('techFilter', '');
+        render();
+    }
+
+    function handleTaskDescInput(inputElem, tangoElemId) {
+        let val = inputElem.value;
+        const regex = /(T00[A-Z0-9]{5})/i;
+        const match = val.match(regex);
+        if (match) {
+            const tangoCode = match[1].toUpperCase();
+            const tangoInput = document.getElementById(tangoElemId);
+            if (!tangoInput.value) { tangoInput.value = tangoCode; }
+            inputElem.value = val.replace(new RegExp(`[\\[\\(]?${tangoCode}[\\]\\)]?`, 'i'), '').trim();
+        }
+    }
+
+    // 🛡️ LÓGICA DE AUTENTICACIÓN MEJORADA
+    async function toggleMode() {
+        if (isTeamLeader) {
+            // Ya no cerramos sesión. Solo ocultamos la UI para operar rápido y sin latencia.
+            deactivateLeaderUI();
+        } else {
+            let loginTime = localStorage.getItem('teamLeaderLoginTime');
+            // Si la sesión existe en Firebase y no han pasado 12h, entramos directo
+            if (auth.currentUser && loginTime && (Date.now() - parseInt(loginTime)) < SESSION_EXPIRATION_MS) {
+                activateLeaderUI();
+            } else {
+                try {
+                    await signInWithPopup(auth, provider);
+                } catch (error) {
+                    if (error.code !== 'auth/popup-closed-by-user') console.error("Error táctico de autenticación:", error);
+                }
+            }
+        }
+    }
+
+    function clearAllData() {
+        showConfirm("⚠️ ¿ESTÁS SEGURO DE BORRAR TODA LA HOJA DE TURNO? (Los técnicos se mantendrán)", () => {
+            avionesData = []; saveData(); 
+        });
+    }
+
+    function formatMatricula(input) {
+        let val = input.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); 
+        if (val.length > 2) input.value = val.substring(0, 2) + '-' + val.substring(2, 5); else input.value = val;
+    }
+
+    function autoFormatTango(input) {
+        let val = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        if (val === 'T' || val === 'T0' || val === 'T00') {
+        } else if (val.length > 0 && !val.startsWith('T00')) {
+            val = val.replace(/^T0?0?/, ''); val = 'T00' + val; 
+        }
+        input.value = val.substring(0, 8); 
+    }
+
+    async function handleTangoClick(tangoCode) {
+        try { await navigator.clipboard.writeText(tangoCode); window.open(MAINTENIX_URL, '_blank'); } 
+        catch (err) { console.error('ERROR AL COPIAR:', err); }
+    }
+
+    function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+
+    function generateTaskHTML(avion, t, showPlaneReg = false) {
+        let cleanDesc = t.desc; let tangoDisplay = '';
+        if (t.tango) {
+            const regexClean = new RegExp(`\\[?${t.tango}\\]?`, 'gi');
+            cleanDesc = cleanDesc.replace(regexClean, '').trim().replace(/[- ]+$/, '').trim();
+            tangoDisplay = ` <span class="tango-link" onclick="handleTangoClick('${t.tango}')">[${t.tango}]</span>`;
+        }
+
+        const priorityLabel = t.priority ? '<span class="priority-badge">URGENTE</span>' : '';
+        const helpLabel = t.help ? '<span class="help-badge">APOYO</span>' : '';
+        const planePrefix = showPlaneReg ? `<strong style="color:var(--primary);">[${avion.reg}]</strong> ` : '';
+
+        return `
+            <div class="task-item ${t.done ? 'completed' : ''} ${t.priority ? 'priority' : ''} ${t.help ? 'help-needed' : ''}">
+                <div class="status-toggle no-print" onclick="toggleTask(${avion.id}, ${t.id})">✓</div>
+                <div class="task-main">
+                    <div class="task-info">
+                        <div class="task-desc">${planePrefix}${cleanDesc}${tangoDisplay}${priorityLabel}${helpLabel}</div>
+                        ${t.techs ? `<div class="task-techs">${t.techs}</div>` : ''}
+                        ${t.comment ? `<div class="task-comment">↳ NOTA: ${t.comment}</div>` : ''}
+                    </div>
+                    <div class="action-bar no-print">
+                        <div class="leader-only leader-wrapper">
+                            <button class="action-btn ${t.priority ? 'active-danger' : ''}" onclick="togglePriority(${avion.id}, ${t.id})">🔥 URG</button>
+                        </div>
+                        <button class="action-btn ${t.help ? 'active-help' : ''}" onclick="toggleHelp(${avion.id}, ${t.id})">🆘 APOYO</button>
+                        <button class="action-btn" onclick="editTaskComment(${avion.id}, ${t.id})">💬 NOTA</button>
+                        <div class="leader-only leader-wrapper">
+                            <button class="action-btn" onclick="openEditTaskModal(${avion.id}, ${t.id})">✏️ EDITAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderGroupedByTech(data, container) {
+        let grouped = {};
+        shiftTechs.forEach(tech => grouped[tech] = []);
+        grouped["SIN ASIGNAR"] = [];
+
+        data.forEach(avion => {
+            if (avion.tareas) {
+                avion.tareas.forEach(t => {
+                    let assigned = false;
+                    if (t.techs) {
+                        const assignedTechs = t.techs.split(' - ');
+                        assignedTechs.forEach(tech => {
+                            if (grouped[tech] !== undefined) {
+                                grouped[tech].push({avion, task: t});
+                                assigned = true;
+                            }
+                        });
+                    }
+                    if (!assigned) { grouped["SIN ASIGNAR"].push({avion, task: t}); }
+                });
+            }
+        });
+
+        for (const [tech, tasks] of Object.entries(grouped)) {
+            if (tasks.length === 0) continue; 
+            const div = document.createElement('div'); div.className = 'avion-section';
+            let html = `
+                <div class="avion-title">
+                    <div class="avion-info-main">👨‍🔧 TÉCNICO: ${tech}</div>
+                </div>
+            `;
+            tasks.forEach(({avion, task}) => { html += generateTaskHTML(avion, task, true); });
+            div.innerHTML = html; container.appendChild(div);
+        }
+    }
+
+    function render() {
+        const container = document.getElementById('aviones-container'); container.innerHTML = '';
+        let displayData = JSON.parse(JSON.stringify(avionesData));
+
+        if (currentTechFilter) {
+            displayData.forEach(avion => {
+                if (avion.tareas) {
+                    avion.tareas = avion.tareas.filter(t => t.techs && t.techs.includes(currentTechFilter));
+                }
+            });
+            displayData = displayData.filter(avion => avion.tareas && avion.tareas.length > 0);
+        }
+
+        if (currentViewMode === 'time') {
+            displayData.sort((a, b) => {
+                if (!a.start && !b.start) return 0;
+                if (!a.start) return 1;
+                if (!b.start) return -1;
+                return a.start.localeCompare(b.start);
+            });
+        }
+
+        if (currentViewMode === 'tech') {
+            renderGroupedByTech(displayData, container);
+            return;
+        }
+
+        displayData.forEach(avion => {
+            const div = document.createElement('div'); div.className = 'avion-section';
+            const wpDisplay = avion.wp ? `<span class="tango-link" onclick="handleTangoClick('${avion.wp}')">(${avion.wp})</span>` : '';
+            const posDisplay = avion.pos ? `<span class="avion-pos">POS: ${avion.pos}</span>` : '';
+            const timesDisplay = (avion.start || avion.end) ? `<span class="avion-times">${avion.start || '--:--'} - ${avion.end || '--:--'}</span>` : '';
+            
+            // Variación visual si es una Actividad
+            const headerStyle = avion.isActivity ? 'style="border-left-color: var(--accent); background-color: #f0fbfb;"' : '';
+            
+            let avionActionBtns = '';
+            if (avion.isActivity) {
+                avionActionBtns = `
+                    <button class="action-btn" onclick="editAvionComment(${avion.id})">💬 NOTA</button>
+                    <div class="leader-only leader-wrapper">
+                        <button class="action-btn" onclick="openEditAvionModal(${avion.id})">🕒 EDITAR</button>
+                    </div>
+                `;
+            } else {
+                avionActionBtns = `
+                    <button class="action-btn" onclick="editAvionComment(${avion.id})">💬 NOTA</button>
+                    <div class="leader-only leader-wrapper">
+                        <button class="action-btn btn-highlight" onclick="openAddTaskModal(${avion.id})">➕ TAREA</button>
+                        <button class="action-btn" onclick="openEditAvionModal(${avion.id})">✏️ EDITAR</button>
+                    </div>
+                `;
+            }
+
+            let html = `
+                <div class="avion-title" ${headerStyle}>
+                    <div class="avion-info-main">
+                        <span class="avion-reg">${avion.reg}</span> ${wpDisplay} ${posDisplay} ${timesDisplay}
+                        ${avion.comment ? `<div class="avion-comment">↳ NOTA: ${avion.comment}</div>` : ''}
+                    </div>
+                    <div class="action-bar avion-bar no-print">
+                        ${avionActionBtns}
+                    </div>
+                </div>
+            `;
+
+            if(avion.tareas) {
+                avion.tareas.forEach(t => { html += generateTaskHTML(avion, t, false); });
+            }
+
+            div.innerHTML = html; container.appendChild(div);
+        });
+    }
+
+    function toggleTask(aId, tId) {
+        const avion = avionesData.find(a => a.id == aId); const tarea = avion.tareas.find(t => t.id == tId);
+        if (!tarea.done) {
+            showConfirm("¿CONFIRMAS QUE ESTA TAREA ESTÁ COMPLETADA Y CERRADA?", () => {
+                tarea.help = false; tarea.priority = false; tarea.done = true; saveData(); 
+            });
+        } else {
+            showConfirm("¿CONFIRMAS QUE DESEAS REABRIR ESTA TAREA?", () => {
+                tarea.done = false; saveData();
+            });
+        }
+    }
+
+    function togglePriority(aId, tId) {
+        const avion = avionesData.find(a => a.id == aId); const tarea = avion.tareas.find(t => t.id == tId);
+        if (tarea.done) return showConfirm("LA TAREA ESTÁ COMPLETADA.", null);
+        const accion = tarea.priority ? "DESACTIVAR" : "ACTIVAR";
+        showConfirm(`¿CONFIRMAS ${accion} EL ESTADO URGENTE?`, () => { tarea.priority = !tarea.priority; saveData(); });
+    }
+
+    function toggleHelp(aId, tId) {
+        const avion = avionesData.find(a => a.id == aId); const tarea = avion.tareas.find(t => t.id == tId);
+        if (tarea.done) return showConfirm("LA TAREA ESTÁ COMPLETADA.", null);
+        const accion = tarea.help ? "DESACTIVAR" : "ACTIVAR";
+        showConfirm(`¿CONFIRMAS ${accion} LA SOLICITUD DE APOYO?`, () => { tarea.help = !tarea.help; saveData(); });
+    }
+
+    function openAddAvionModal() {
+        document.getElementById('add-ac-reg').value = ''; document.getElementById('add-ac-wp').value = '';
+        document.getElementById('add-ac-pos').value = ''; document.getElementById('add-ac-start').value = '';
+        document.getElementById('add-ac-end').value = ''; document.getElementById('add-ac-comment').value = '';
+        document.getElementById('add-avion-modal').style.display = 'block';
+    }
+
+    function saveAddAvion() {
+        const reg = document.getElementById('add-ac-reg').value.toUpperCase().trim();
+        let wp = document.getElementById('add-ac-wp').value.toUpperCase().trim();
+        const pos = document.getElementById('add-ac-pos').value.toUpperCase().trim();
+        const start = document.getElementById('add-ac-start').value;
+        const end = document.getElementById('add-ac-end').value;
+        const comment = document.getElementById('add-ac-comment').value.toUpperCase().trim();
+        
+        if (!reg || reg.length !== 6) return showConfirm("LA MATRÍCULA DEBE ESTAR COMPLETA (EJ: CC-BGM)", null);
+        if (wp.length === 5 && !wp.startsWith('T00')) wp = 'T00' + wp;
+        if (wp && wp.length !== 8) return showConfirm("EL WP DEBE TENER 8 CARACTERES (EJ: T00RWT2F)", null);
+
+        avionesData.push({ id: Date.now(), reg, isActivity: false, wp, pos, start, end, comment, tareas: [] });
+        saveData(); closeModal('add-avion-modal');
+    }
+
+    function openAddActivityModal() {
+        document.getElementById('add-act-title').value = ''; 
+        document.getElementById('add-act-start').value = '';
+        document.getElementById('add-act-end').value = '';
+        buildTechGrid('add-act-techs', ""); 
+        document.getElementById('add-activity-modal').style.display = 'block';
+    }
+
+    function saveAddActivity() {
+        const title = document.getElementById('add-act-title').value.trim().toUpperCase();
+        const start = document.getElementById('add-act-start').value;
+        const end = document.getElementById('add-act-end').value;
+        const checkboxes = document.querySelectorAll('.add-act-techs-cb:checked');
+        const techs = Array.from(checkboxes).map(cb => cb.value).join(' - ');
+
+        if (!title) return showConfirm("INGRESE EL TÍTULO DE LA ACTIVIDAD.", null);
+
+        avionesData.push({ 
+            id: Date.now(), 
+            reg: "⭐ ACTIVIDAD EXTRA", 
+            isActivity: true, 
+            wp: "", pos: "", start: start, end: end, comment: "", 
+            tareas: [{
+                id: Date.now() + 1,
+                desc: title,
+                tango: "",
+                techs: techs,
+                done: false, priority: false, help: false, comment: ""
+            }] 
+        });
+        saveData(); closeModal('add-activity-modal');
+    }
+
+    function openEditAvionModal(id) {
+        const avion = avionesData.find(a => a.id == id); if (!avion) return; editCurrentAvionId = id;
+        
+        document.getElementById('edit-ac-reg').value = avion.reg;
+        document.getElementById('edit-ac-reg').disabled = avion.isActivity;
+        
+        document.getElementById('edit-ac-wp').style.display = avion.isActivity ? 'none' : 'block';
+        document.getElementById('edit-ac-pos').style.display = avion.isActivity ? 'none' : 'block';
+        
+        document.getElementById('edit-ac-wp').value = avion.wp || '';
+        document.getElementById('edit-ac-pos').value = avion.pos || ''; 
+        document.getElementById('edit-ac-start').value = avion.start || '';
+        document.getElementById('edit-ac-end').value = avion.end || ''; 
+        document.getElementById('edit-ac-comment').value = avion.comment || '';
+        document.getElementById('edit-avion-modal').style.display = 'block';
+    }
+
+    function saveEditAvion() {
+        const avion = avionesData.find(a => a.id == editCurrentAvionId);
+        
+        if (!avion.isActivity) {
+            const reg = document.getElementById('edit-ac-reg').value.toUpperCase().trim();
+            let wp = document.getElementById('edit-ac-wp').value.toUpperCase().trim();
+            
+            if (!reg || reg.length !== 6) return showConfirm("LA MATRÍCULA DEBE ESTAR COMPLETA", null);
+            if (wp.length === 5 && !wp.startsWith('T00')) wp = 'T00' + wp;
+            if (wp && wp.length !== 8) return showConfirm("EL WP DEBE TENER 8 CARACTERES", null);
+
+            avion.reg = reg; 
+            avion.wp = wp; 
+            avion.pos = document.getElementById('edit-ac-pos').value.toUpperCase().trim();
+        }
+
+        avion.start = document.getElementById('edit-ac-start').value; 
+        avion.end = document.getElementById('edit-ac-end').value;
+        avion.comment = document.getElementById('edit-ac-comment').value.toUpperCase().trim();
+        saveData(); closeModal('edit-avion-modal');
+    }
+
+    function confirmDeleteAvion() {
+        showConfirm("¿CONFIRMAS BORRAR ESTE BLOQUE Y TODAS SUS TAREAS?", () => {
+            avionesData = avionesData.filter(a => a.id != editCurrentAvionId);
+            saveData(); closeModal('edit-avion-modal');
+        });
+    }
+
+    function buildTechGrid(containerId, selectedTechsString = "") {
+        const container = document.getElementById(containerId); container.innerHTML = '';
+        const currentTechs = selectedTechsString ? selectedTechsString.split(' - ') : [];
+        if (shiftTechs.length === 0) {
+            container.innerHTML = '<div style="font-size:11px; color:var(--comment); padding:8px;">NO HAY TÉCNICOS AGREGADOS AL TURNO</div>';
+        } else {
+            shiftTechs.forEach(tech => {
+                const isChecked = currentTechs.includes(tech) ? "checked" : "";
+                container.innerHTML += `
+                    <label class="tech-checkbox-label">
+                        <input type="checkbox" class="${containerId}-cb" value="${tech}" ${isChecked}>
+                        <span>${tech}</span>
+                    </label>`;
+            });
+        }
+    }
+
+    function openAddTaskModal(avionId) {
+        editCurrentAvionId = avionId;
+        document.getElementById('add-task-desc').value = ''; document.getElementById('add-task-tango').value = '';
+        buildTechGrid('add-task-techs', ""); document.getElementById('add-task-modal').style.display = 'block';
+    }
+
+    function saveAddTask() {
+        const avion = avionesData.find(a => a.id == editCurrentAvionId);
+        if(!avion.tareas) avion.tareas = [];
+        const desc = document.getElementById('add-task-desc').value.trim().toUpperCase();
+        let tango = document.getElementById('add-task-tango').value.trim().toUpperCase();
+        
+        if (!desc) return showConfirm("INGRESE EL TÍTULO DE LA TAREA.", null);
+        if (tango && tango.length !== 8) return showConfirm("EL TANGO DEBE TENER 8 CARACTERES.", null);
+
+        const checkboxes = document.querySelectorAll('.add-task-techs-cb:checked');
+        const techs = Array.from(checkboxes).map(cb => cb.value).join(' - ');
+
+        avion.tareas.push({ id: Date.now(), desc, tango, techs, done: false, priority: false, help: false, comment: "" });
+        saveData(); closeModal('add-task-modal');
+    }
+
+    function openEditTaskModal(aId, tId) {
+        const avion = avionesData.find(a => a.id == aId); const tarea = avion.tareas.find(t => t.id == tId);
+        editCurrentAvionId = aId; editCurrentTaskId = tId;
+        document.getElementById('edit-task-desc').value = tarea.desc; 
+        document.getElementById('edit-task-tango').value = tarea.tango || "";
+        document.getElementById('edit-task-tango').style.display = avion.isActivity ? 'none' : 'block';
+        
+        buildTechGrid('edit-task-techs', tarea.techs || ""); document.getElementById('edit-task-modal').style.display = 'block';
+    }
+
+    function saveEditTask() {
+        const avion = avionesData.find(a => a.id == editCurrentAvionId); const tarea = avion.tareas.find(t => t.id == editCurrentTaskId);
+        const desc = document.getElementById('edit-task-desc').value.trim().toUpperCase();
+        
+        let tango = "";
+        if (!avion.isActivity) {
+            tango = document.getElementById('edit-task-tango').value.trim().toUpperCase();
+            if (tango && tango.length !== 8) return showConfirm("EL TANGO DEBE TENER 8 CARACTERES.", null);
+        }
+        
+        if (!desc) return showConfirm("LA DESCRIPCIÓN NO PUEDE ESTAR VACÍA.", null);
+
+        const checkboxes = document.querySelectorAll('.edit-task-techs-cb:checked');
+        const techs = Array.from(checkboxes).map(cb => cb.value).join(' - ');
+
+        tarea.desc = desc; tarea.tango = tango; tarea.techs = techs;
+        saveData(); closeModal('edit-task-modal');
+    }
+
+    function confirmDeleteTask() {
+        showConfirm("¿CONFIRMAS BORRAR ESTA TAREA/ACTIVIDAD?", () => {
+            const avion = avionesData.find(a => a.id == editCurrentAvionId);
+            avion.tareas = avion.tareas.filter(t => t.id != editCurrentTaskId);
+            saveData(); closeModal('edit-task-modal');
+        });
+    }
+
+    function editAvionComment(id) {
+        const avion = avionesData.find(a => a.id == id);
+        showPromptModal("NOTA", avion.comment, (val) => {
+            avion.comment = val; saveData();
+        });
+    }
+
+    function editTaskComment(aId, tId) {
+        const avion = avionesData.find(a => a.id == aId); const tarea = avion.tareas.find(t => t.id == tId);
+        showPromptModal("NOTA DE TAREA/ACTIVIDAD", tarea.comment, (val) => {
+            tarea.comment = val; saveData();
+        });
+    }
+
+    Object.assign(window, {
+        updateHeader, addTech, removeTech, toggleMode, clearAllData,
+        formatMatricula, autoFormatTango, handleTangoClick, closeModal,
+        toggleTask, togglePriority, toggleHelp,
+        openAddAvionModal, saveAddAvion, openAddActivityModal, saveAddActivity, 
+        openEditAvionModal, saveEditAvion, confirmDeleteAvion,
+        openAddTaskModal, saveAddTask, openEditTaskModal, saveEditTask, confirmDeleteTask,
+        editAvionComment, editTaskComment, closeConfirmModal, closePromptModal,
+        changeViewMode, applyLocalFilter, resetLocalFilter, handleTaskDescInput
+    });
+
+</script>
+</body>
+</html>
