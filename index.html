@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programación Diaria - LATAM (HUD Mode)</title>
+    <title>Programación Diaria - LATAM (Technical Block Mode)</title>
     <style>
         :root {
-            /* Paleta Dark Táctica */
-            --bg: #0d1117;
-            --panel-bg: #161b22;
-            --primary: #c9d1d9; 
-            --accent: #58a6ff; /* Azul HUD */
-            --border: #30363d;
-            --leader-color: #d2a8ff;
-            --danger: #f85149;
-            --help: #db6d28; 
-            --comment: #8b949e;
-            --success: #2ea043;
-            --input-bg: #010409;
+            /* Paleta Técnica - Alto Contraste */
+            --primary: #0f172a; /* Slate 900 - Azul muy oscuro casi negro */
+            --accent: #0284c7; /* Azul técnico */
+            --bg: #e2e8f0; /* Fondo general gris claro para que resalten los paneles */
+            --panel-bg: #ffffff;
+            --border: #cbd5e1;
+            --leader-color: #8b5cf6; /* Violeta/Púrpura para Team Leader */
+            --danger: #dc2626;
+            --help: #ea580c; 
+            --comment: #64748b;
+            --success: #16a34a;
         }
 
         body, input, select, button, textarea {
@@ -38,14 +37,14 @@
         /* Barra superior general */
         .top-bar {
             display: flex; justify-content: space-between; margin-bottom: 10px;
-            background-color: var(--panel-bg); padding: 10px 15px;
-            border-radius: 2px; border: 1px solid var(--border); align-items: center;
+            background-color: var(--panel-bg); padding: 12px 15px;
+            border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); align-items: center;
         }
 
         .btn-top {
             width: 140px; height: 32px; font-size: 11px; padding: 0; font-weight: bold;
             display: flex; align-items: center; justify-content: center; box-sizing: border-box;
-            border-radius: 2px; cursor: pointer; border: none; letter-spacing: 0.5px;
+            border-radius: 3px; cursor: pointer; border: none; letter-spacing: 0.5px;
         }
 
         .leader-wrapper { display: contents; } 
@@ -54,219 +53,274 @@
         /* Controles de vista y filtros locales */
         .view-controls {
             display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; 
-            background: var(--panel-bg); padding: 10px 15px; border-radius: 2px; 
-            border: 1px solid var(--border); align-items: center; justify-content: space-between;
+            background: var(--panel-bg); padding: 12px 15px; border-radius: 4px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); align-items: center; justify-content: space-between;
         }
 
         /* ==========================================
            PANEL DE CONTROL TEAM LEADER
            ========================================== */
         .header-controls {
-            background-color: var(--panel-bg); border: 1px solid var(--border);
-            border-left: 4px solid var(--leader-color); padding: 15px;
-            border-radius: 2px; margin-bottom: 25px;
+            background-color: #faf5ff; border: 1px solid #e9d5ff;
+            border-left: 5px solid var(--leader-color); padding: 15px;
+            border-radius: 4px; margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .leader-panel-header {
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px;
+            border-bottom: 2px dashed #e9d5ff; padding-bottom: 10px; margin-bottom: 12px;
         }
 
         .leader-title { font-size: 1.1em; font-weight: 800; color: var(--leader-color); display: flex; align-items: center; gap: 8px; }
         .leader-grid { display: flex; flex-direction: column; gap: 12px; }
         .control-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 
-        input, select {
-            padding: 6px 10px; border: 1px solid var(--border);
-            border-radius: 2px; font-size: 11px; outline: none; box-sizing: border-box;
-            background-color: var(--input-bg); color: var(--primary);
+        input, select, button {
+            padding: 8px 10px; border: 1px solid var(--border);
+            border-radius: 3px; font-size: 11px; outline: none; box-sizing: border-box;
         }
         
-        input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+        input:focus, select:focus { border-color: var(--accent); outline: 2px solid rgba(2, 132, 199, 0.2); }
         input { flex: 1; min-width: 130px; }
-        input[type="time"] { min-width: auto; width: 90px; }
-        input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1); }
-        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
+        input[type="time"] { min-width: auto; width: 90px; font-family: monospace; font-weight: bold; font-size: 13px;}
         
-        button { background-color: var(--border); color: var(--primary); border: none; cursor: pointer; font-weight: 700; transition: all 0.2s; }
-        button:hover { filter: brightness(1.2); }
+        button { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: 700; transition: all 0.2s; }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        button:active { transform: translateY(0); }
         
-        .btn-accent { background-color: var(--accent); color: #0d1117; }
-        .btn-leader { background-color: var(--leader-color); color: #0d1117; }
+        .btn-accent { background-color: var(--accent); color: #fff;}
+        .btn-leader { background-color: var(--leader-color); color: #fff; }
         .btn-clear { background-color: var(--danger); color: white; }
-        .btn-outline { background-color: transparent; border: 1px solid var(--comment); color: var(--comment); }
-        .btn-outline:hover { background-color: var(--comment); color: var(--bg); }
-        .btn-danger-outline { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
-        .btn-danger-outline:hover { background: var(--danger); color: white; }
+        .btn-outline { background-color: #f1f5f9; border: 1px solid var(--border); color: var(--comment); }
+        .btn-outline:hover { background-color: #e2e8f0; color: var(--primary); }
+        .btn-danger-outline { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; }
+        .btn-danger-outline:hover { background: var(--danger); color: white; border-color: var(--danger); }
 
         /* Etiquetas de técnicos */
-        #tech-pills-container { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; padding: 10px 0; }
+        #tech-pills-container {
+            display: flex; flex-wrap: wrap; gap: 6px; width: 100%;
+            padding: 5px 0;
+        }
 
         .tech-pill {
-            background-color: var(--input-bg); color: var(--accent); border: 1px solid #1f6feb;
-            padding: 4px 10px; border-radius: 2px; font-size: 11px;
+            background-color: #ffffff; color: var(--primary); border: 1px solid var(--border);
+            padding: 4px 10px; border-radius: 4px; font-size: 11px;
             display: inline-flex; align-items: center; gap: 8px; font-weight: bold;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
         
-        .tech-pill span.tech-name { line-height: 1; }
         .tech-pill span.tech-remove { 
-            cursor: pointer; color: var(--comment); background: transparent; 
+            cursor: pointer; color: var(--comment); 
             display: flex; align-items: center; justify-content: center; 
-            font-size: 12px; transition: 0.2s; font-weight: bold;
+            font-size: 13px; font-weight: bold; transition: color 0.2s;
         }
         .tech-pill span.tech-remove:hover { color: var(--danger); }
 
-        .document-header { font-size: 1.4em; font-weight: 800; margin-bottom: 25px; border-bottom: 2px solid var(--border); padding-bottom: 8px; letter-spacing: 1px; color: var(--primary); }
+        .document-header { font-size: 1.5em; font-weight: 900; margin-bottom: 20px; border-bottom: 4px solid var(--primary); padding-bottom: 8px; text-transform: uppercase; letter-spacing: -0.5px;}
         
         /* ==========================================
-           DISEÑO MINIMALISTA DARK - AVIONES Y TAREAS
+           DISEÑO DE BLOQUES TÉCNICOS (AVIONES Y TAREAS)
            ========================================== */
         .avion-section { 
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
             background: var(--panel-bg);
             border: 1px solid var(--border);
-            border-radius: 2px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden; /* Mantiene la cabecera dentro de los bordes redondeados */
         }
 
+        /* CABECERA SÓLIDA DEL AVIÓN */
         .avion-title {
             font-size: 1.1em; font-weight: bold; display: flex; align-items: stretch;
-            background: rgba(48, 54, 61, 0.4); border-bottom: 1px solid var(--border); flex-wrap: wrap;
-            border-left: 4px solid var(--comment);
+            background: var(--primary); color: #ffffff;
+            flex-wrap: wrap;
         }
         
-        .avion-title[style*="border-left-color: var(--accent)"] { background: rgba(88, 166, 255, 0.1) !important; }
+        .avion-title[style*="f0fbfb"] {
+            /* Override táctico para actividades extra */
+            background: #0369a1 !important; /* Azul más claro pero firme */
+            color: #ffffff !important;
+        }
 
-        .avion-info-main { flex: 1; min-width: 250px; padding: 10px 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .avion-info-main { 
+            flex: 1; min-width: 250px; padding: 12px 16px; 
+            display: flex; align-items: center; flex-wrap: wrap; gap: 12px; 
+        }
         
-        .avion-reg { color: #ffffff; font-size: 1.1em; font-weight: 900; letter-spacing: 0.5px; }
-        .avion-pos { color: #0d1117; background: var(--primary); padding: 2px 6px; border-radius: 2px; font-size: 0.85em; font-weight: bold; letter-spacing: 0.5px; }
-        .avion-times { color: var(--accent); font-size: 0.85em; display: inline-block; background: var(--input-bg); padding: 2px 6px; border-radius: 2px; font-weight: bold; font-family: monospace; border: 1px solid var(--border); }
-        .avion-comment { font-size: 0.85em; color: var(--comment); font-weight: normal; font-style: italic; width: 100%; margin-top: 4px; }
+        .avion-reg { font-size: 1.3em; font-weight: 900; letter-spacing: 1px; color: #ffffff; }
+        
+        /* Datos de WP, POS, Tiempos en la cabecera oscura */
+        .avion-pos { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 3px; font-size: 0.85em; }
+        .avion-times { color: #ffffff; font-size: 0.85em; display: inline-block; background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 3px; font-family: 'Courier New', Courier, monospace; font-weight: bold;}
+        .avion-comment { font-size: 0.85em; color: #94a3b8; font-weight: normal; font-style: italic; width: 100%; margin-top: 6px; }
 
-        .tango-link { color: var(--accent); text-decoration: none; cursor: pointer; font-weight: bold; padding: 1px 4px; transition: background 0.2s; border-radius: 2px; font-family: monospace; }
-        .tango-link:hover { background-color: rgba(88, 166, 255, 0.15); text-decoration: underline; }
+        .tango-link { color: #bae6fd; text-decoration: none; cursor: pointer; font-weight: bold; padding: 1px 4px; border-radius: 2px; font-family: monospace; font-size: 1.1em;}
+        .tango-link:hover { background-color: rgba(255,255,255,0.1); text-decoration: underline; color: #ffffff;}
 
-        /* Estructura de lista para Tareas */
+        /* Estructura de "Filas de Tabla" para Tareas */
         .task-item {
             display: flex; align-items: flex-start;
-            padding: 10px 15px; border-bottom: 1px solid var(--border);
-            background-color: transparent; transition: background-color 0.2s;
+            padding: 12px 16px; border-top: 1px solid var(--border);
+            background-color: var(--panel-bg);
+            position: relative;
         }
-        .task-item:last-child { border-bottom: none; }
-        .task-item:hover { background-color: rgba(255, 255, 255, 0.03); }
+        
+        /* Efecto Cebra para leer mejor */
+        .task-item:nth-child(even) { background-color: #f8fafc; }
+        .task-item:hover { background-color: #f1f5f9; }
 
-        .task-item.priority { background-color: rgba(248, 81, 73, 0.05); border-left: 3px solid var(--danger); padding-left: 12px; }
-        .task-item.help-needed { background-color: rgba(219, 109, 40, 0.05); border-left: 3px solid var(--help); padding-left: 12px; }
-        .task-item.priority.help-needed { border-left: 3px solid var(--danger); background: linear-gradient(90deg, rgba(248,81,73,0.08) 0%, rgba(219,109,40,0.08) 100%); }
+        /* Líneas indicadoras de estado gruesas en el borde izquierdo */
+        .task-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: transparent; }
+        .task-item.priority::before { background: var(--danger); }
+        .task-item.help-needed::before { background: var(--help); }
+        .task-item.priority.help-needed::before { background: linear-gradient(to bottom, var(--danger) 50%, var(--help) 50%); }
 
-        .priority-badge { color: var(--danger); font-weight: 800; font-size: 0.8em; border: 1px solid var(--danger); padding: 1px 4px; border-radius: 2px; margin-left: 6px; }
-        .help-badge { color: var(--help); font-weight: 800; font-size: 0.8em; border: 1px solid var(--help); padding: 1px 4px; border-radius: 2px; margin-left: 6px; }
+        .priority-badge { color: white; background-color: var(--danger); font-weight: 800; font-size: 0.75em; padding: 2px 6px; border-radius: 3px; margin-left: 8px; letter-spacing: 0.5px;}
+        .help-badge { color: white; background-color: var(--help); font-weight: 800; font-size: 0.75em; padding: 2px 6px; border-radius: 3px; margin-left: 8px; letter-spacing: 0.5px;}
 
         .status-toggle {
-            width: 18px; height: 18px; min-width: 18px; min-height: 18px;
-            box-sizing: border-box; border: 2px solid var(--comment);
-            background-color: var(--input-bg); margin-right: 12px; margin-top: 2px;
+            width: 20px; height: 20px; min-width: 20px; min-height: 20px;
+            box-sizing: border-box; border: 2px solid var(--primary);
+            background-color: white; margin-right: 15px; margin-top: 2px;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; color: transparent; font-size: 12px; transition: all 0.2s; user-select: none; border-radius: 2px;
+            font-weight: bold; color: transparent; font-size: 14px; transition: all 0.2s; user-select: none; border-radius: 3px;
         }
 
         .task-item.completed .status-toggle { background-color: var(--success); border-color: var(--success); color: white; }
-        .task-item.completed { opacity: 0.4; background-color: transparent; }
+        .task-item.completed { opacity: 0.6; background-color: #f1f5f9; }
+        .task-item.completed::before { background: var(--success); }
+        
         .task-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
         .task-info { width: 100%; transition: all 0.3s ease; }
+        
+        /* En tareas completadas, los links de tango cambian para adaptarse al fondo claro */
+        .task-item .tango-link { color: var(--accent); }
+        .task-item .tango-link:hover { background-color: rgba(2, 132, 199, 0.1); color: var(--primary);}
+        
         .task-item.completed .task-info, .task-item.completed .tango-link { text-decoration: line-through; color: var(--comment); }
-        .task-desc { font-weight: 600; font-size: 0.95em; line-height: 1.4; color: var(--primary); }
-        .task-techs { font-size: 0.8em; font-weight: 700; color: #a5d6ff; margin-top: 4px; display: inline-block; background: rgba(56, 139, 253, 0.1); border: 1px solid rgba(56, 139, 253, 0.4); padding: 2px 6px; border-radius: 2px; }
-        .task-comment { font-size: 0.85em; color: var(--comment); margin-top: 4px; font-style: italic; font-weight: 500; }
+        .task-desc { font-weight: 700; font-size: 1em; line-height: 1.4; color: var(--primary); }
+        
+        /* Cápsula de técnicos asignados */
+        .task-techs { font-size: 0.8em; font-weight: 800; color: var(--primary); margin-top: 6px; display: inline-block; background: #e2e8f0; border: 1px solid var(--border); padding: 3px 8px; border-radius: 4px; }
+        .task-comment { font-size: 0.85em; color: var(--comment); margin-top: 6px; font-style: italic; font-weight: 600; border-left: 2px solid var(--border); padding-left: 8px;}
 
         /* ==========================================
            BOTONERAS TÁCTICAS
            ========================================== */
-        .action-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; align-items: stretch; width: 100%; }
-        .action-bar.avion-bar { margin-top: 0; justify-content: flex-end; width: auto; padding: 8px 10px; align-items: center; background: transparent; }
+        .action-bar { 
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; 
+            align-items: stretch; width: 100%;
+        }
+        
+        /* La botonera de la cabecera oscura del avión */
+        .action-bar.avion-bar { margin-top: 0; justify-content: flex-end; width: auto; padding: 12px 16px; align-items: center; background: rgba(0,0,0,0.15); border-left: 1px solid rgba(255,255,255,0.1);}
 
         .action-btn {
-            padding: 4px 8px; font-size: 9px; font-weight: 800;
-            border-radius: 2px; border: 1px solid var(--border);
-            background: var(--input-bg); color: var(--primary);
+            padding: 6px 10px; font-size: 9px; font-weight: 800;
+            border-radius: 3px; border: 1px solid var(--border);
+            background: #ffffff; color: var(--comment);
             cursor: pointer; transition: all 0.2s; 
             display: inline-flex; align-items: center; justify-content: center;
             text-align: center; letter-spacing: 0.5px;
         }
 
-        .action-btn:hover { background: var(--border); color: #fff; border-color: var(--primary); }
+        .action-btn:hover { background: #f1f5f9; color: var(--primary); border-color: var(--comment); }
+        
+        /* Estilos específicos para botones dentro de la cabecera del avión */
+        .avion-bar .action-btn { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: #ffffff; }
+        .avion-bar .action-btn:hover { background: rgba(255,255,255,0.2); border-color: #ffffff; }
+        .avion-bar .btn-highlight { background: var(--accent); border-color: var(--accent); color: #ffffff;}
+        .avion-bar .btn-highlight:hover { background: #0369a1; }
+
         .action-btn.active-danger { background: var(--danger); color: white; border-color: var(--danger); }
         .action-btn.active-help { background: var(--help); color: white; border-color: var(--help); }
-        .btn-highlight { color: var(--accent); border-color: var(--accent); background-color: rgba(88, 166, 255, 0.1); }
-        .btn-highlight:hover { background-color: var(--accent); color: #0d1117; }
 
         /* ==========================================
            MODALS (VENTANAS FLOTANTES)
            ========================================== */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(1, 4, 9, 0.85); backdrop-filter: blur(4px); }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(3px); }
         
         .modal-content {
-            background-color: var(--panel-bg); margin: 8% auto; padding: 20px;
-            border: 1px solid var(--border); width: 90%; max-width: 480px; border-radius: 2px;
-            box-shadow: 0 0 0 1px #30363d, 0 16px 32px rgba(0,0,0,0.85); max-height: 85vh; overflow-y: auto;
+            background-color: var(--panel-bg); margin: 6% auto; padding: 25px;
+            border: 1px solid var(--border); width: 90%; max-width: 480px; border-radius: 4px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-height: 85vh; overflow-y: auto;
         }
         
-        .modal-header { font-weight: 800; font-size: 1.1em; margin-bottom: 15px; color: #fff; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
+        .modal-header { font-weight: 900; font-size: 1.2em; margin-bottom: 20px; color: var(--primary); border-bottom: 3px solid var(--primary); padding-bottom: 8px; }
         .modal-content input, .modal-content select { width: 100%; margin-bottom: 12px; box-sizing: border-box; }
         .modal-row { display: flex; gap: 10px; }
         .modal-row > * { flex: 1; }
 
-        .tech-grid { display: flex; flex-wrap: wrap; gap: 6px; max-height: 180px; overflow-y: auto; margin-bottom: 15px; }
+        .tech-grid {
+            display: flex; flex-wrap: wrap; gap: 6px; max-height: 180px; overflow-y: auto; margin-bottom: 15px;
+        }
 
         .tech-checkbox-label {
             display: flex; align-items: center; justify-content: center;
-            background: var(--input-bg); border: 1px solid var(--border); padding: 6px 12px;
-            border-radius: 2px; cursor: pointer; font-size: 10px; font-weight: 700;
+            background: #f8fafc; border: 1px solid var(--border); padding: 8px 14px;
+            border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 800;
             transition: all 0.2s; user-select: none; color: var(--comment); text-align: center;
         }
 
         .tech-checkbox-label:hover { border-color: var(--primary); color: var(--primary); }
-        .tech-checkbox-label:has(input:checked) { border-color: var(--accent); background: rgba(88, 166, 255, 0.1); color: var(--accent); }
+        .tech-checkbox-label:has(input:checked) { 
+            border-color: var(--primary); background: var(--primary); color: white; 
+        }
         .tech-checkbox-label input { display: none; }
         .tech-checkbox-label span { word-wrap: break-word; white-space: normal; line-height: 1.2; }
 
-        .modal-footer { display: flex; gap: 8px; margin-top: 5px; padding-top: 15px; border-top: 1px solid var(--border); }
-        .btn-modal-action { flex: 1; padding: 10px 0; font-size: 11px; text-align: center; display: flex; justify-content: center; align-items: center; }
+        .modal-footer { display: flex; gap: 8px; margin-top: 10px; padding-top: 15px; border-top: 1px solid var(--border); }
+        .btn-modal-action { flex: 1; padding: 12px 0; font-size: 11px; text-align: center; display: flex; justify-content: center; align-items: center; letter-spacing: 0.5px;}
 
         /* ==========================================
-           ESTILOS DE IMPRESIÓN (PDF) - INVERSIÓN A B/N
+           ESTILOS DE IMPRESIÓN (PDF) - MODO TABLA
            ========================================== */
         @media print {
             @page { size: letter; margin: 1cm; } .no-print { display: none !important; }
-            body { padding: 0; background-color: white !important; font-size: 11px; color: #000 !important; }
-            .document-header { font-size: 1.2em; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid #000; color: #000 !important; }
+            body { padding: 0; background-color: white; font-size: 11px; color: #000; }
             
-            .avion-section { margin-bottom: 15px; border: 1px solid #000; page-break-inside: avoid; border-radius: 0; background: #fff !important; }
+            .document-header { font-size: 1.3em; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 3px solid #000; color: #000; }
             
+            .avion-section { 
+                margin-bottom: 20px; 
+                border: 2px solid #000; 
+                page-break-inside: avoid; 
+                border-radius: 0; 
+                box-shadow: none;
+            }
+            
+            /* La cabecera oscura pasa a ser un marco con texto negro para ahorrar tinta */
             .avion-title { 
-                background: #f0f0f0 !important; color: #000 !important; border-bottom: 1px solid #000; 
-                border-left: 4px solid #000 !important; padding: 6px 10px; font-size: 1em;
+                background: #f0f0f0 !important; color: #000 !important; border-bottom: 2px solid #000; 
+                padding: 8px 12px; font-size: 1.1em;
                 -webkit-print-color-adjust: exact; print-color-adjust: exact;
             }
             .avion-reg { color: #000 !important; }
-            .avion-info-main { padding: 0; gap: 6px; }
-            .avion-pos { background: none !important; border: 1px solid #000; color: #000 !important; padding: 1px 4px; }
-            .avion-times { background: none !important; border: 1px solid #000; color: #000 !important; padding: 1px 4px; }
+            .avion-info-main { padding: 0; gap: 8px; }
             
-            .task-item { padding: 6px 10px; border-bottom: 1px solid #ccc; margin: 0; background: transparent !important; }
-            .task-item:last-child { border-bottom: none; }
-            .task-item.completed { opacity: 0.8; }
+            .avion-pos, .avion-times { background: none !important; border: 1px solid #000; color: #000 !important; padding: 2px 6px; }
+            .avion-comment { color: #333 !important; }
+            
+            .task-item { padding: 8px 12px; border-top: 1px solid #000; margin: 0; background: #fff !important; }
+            .task-item::before { display: none; } /* Ocultar líneas indicadoras laterales en impresión */
+            .task-item.priority { border-left: 4px solid #000; }
+            .task-item.help-needed { border-left: 4px solid #666; }
+            
+            .task-item.completed { opacity: 0.8; background: #fafafa !important;}
             .task-desc { color: #000 !important; }
             .task-item.completed .task-info { text-decoration: line-through; color: #555 !important; }
-            .task-item.priority { border-left: 2px solid #000 !important; }
-            .task-item.help-needed { border-left: 2px solid #555 !important; }
             
-            .priority-badge, .help-badge { border: 1px solid #000; color: #000 !important; }
+            .priority-badge, .help-badge { border: 1px solid #000; color: #000 !important; background: transparent !important; }
             
-            .task-techs { background: none !important; border: 1px dotted #888 !important; color: #000 !important; padding: 1px 4px; }
-            .status-toggle { margin-top: 0px; width: 14px; min-width: 14px; height: 14px; min-height: 14px; font-size: 10px; border-color: #000 !important; background: #fff !important; }
+            .task-techs { background: none !important; border: 1px dashed #000 !important; color: #000 !important; padding: 2px 6px; }
+            .task-comment { border-left-color: #000; color: #333 !important; }
+            
+            .status-toggle { margin-top: 0px; width: 14px; min-width: 14px; height: 14px; min-height: 14px; font-size: 10px; border-color: #000 !important; }
             .task-item.completed .status-toggle { background-color: #000 !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .tango-link { text-decoration: none; color: #000 !important; border: 1px solid #ccc; }
+            .tango-link, .task-item .tango-link { text-decoration: none; color: #000 !important; border: 1px solid #ccc; font-weight: bold;}
         }
     </style>
 </head>
@@ -275,12 +329,12 @@
 <div class="container">
     <div class="top-bar no-print">
         <button type="button" id="btn-mode-toggle" class="btn-accent btn-top" onclick="toggleMode()">MODO TÉCNICO</button>
-        <button class="btn-top" onclick="window.print()" style="background-color: var(--border); color:var(--primary);">🖨️ IMPRIMIR HOJA</button>
+        <button class="btn-top" onclick="window.print()" style="background-color: var(--primary); color:white;">🖨️ IMPRIMIR HOJA</button>
     </div>
 
     <div class="view-controls no-print">
         <div style="display: flex; gap: 8px; align-items: center;">
-            <span style="font-size: 11px; font-weight: bold; color: var(--comment);">MODO DE VISTA:</span>
+            <span style="font-size: 11px; font-weight: bold; color: var(--primary);">MODO DE VISTA:</span>
             <select id="view-mode-select" onchange="changeViewMode()" style="min-width: 170px; font-weight: bold;">
                 <option value="default">✈️ POR AVIÓN (DEFAULT)</option>
                 <option value="time">🕒 POR HORA DE INICIO</option>
@@ -288,18 +342,18 @@
             </select>
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
-            <span style="font-size: 11px; font-weight: bold; color: var(--comment);">MI FILTRO LOCAL:</span>
+            <span style="font-size: 11px; font-weight: bold; color: var(--primary);">MI FILTRO LOCAL:</span>
             <select id="local-tech-filter" onchange="applyLocalFilter()" style="min-width: 160px;">
                 <option value="">TODOS LOS TÉCNICOS</option>
             </select>
-            <button class="btn-outline" onclick="resetLocalFilter()" style="padding: 6px 10px; font-size: 10px;">RESTABLECER</button>
+            <button class="btn-outline" onclick="resetLocalFilter()" style="padding: 8px 12px; font-size: 10px; font-weight: bold;">RESTABLECER</button>
         </div>
     </div>
 
     <div class="header-controls leader-only no-print">
         <div class="leader-panel-header">
             <div class="leader-title">⚙️ PANEL DE CONTROL TEAM LEADER</div>
-            <button class="btn-danger-outline" onclick="clearAllData()" style="padding: 6px 10px; font-size: 10px;">⚠️ BORRAR TODO</button>
+            <button class="btn-danger-outline" onclick="clearAllData()" style="padding: 6px 12px; font-size: 10px; border-radius:3px;">⚠️ BORRAR TODO</button>
         </div>
 
         <div class="leader-grid">
@@ -317,7 +371,7 @@
             <div class="control-group" style="margin-bottom: 5px;">
                 <span style="font-size: 10px; font-weight: bold; color: var(--comment); width: 65px;">TÉCNICOS:</span>
                 <input type="text" id="in-new-tech" placeholder="NOMBRE DEL TECNICO" onkeypress="if(event.key === 'Enter') addTech()" style="max-width: 270px;">
-                <button class="btn-leader" onclick="addTech()">+ AGREGAR A LA LISTA</button>
+                <button class="btn-leader" onclick="addTech()" style="border-radius: 3px;">+ AGREGAR A LA LISTA</button>
             </div>
 
             <div id="tech-pills-container"></div>
@@ -327,9 +381,9 @@
     <div id="print-area">
         <div class="document-header" id="display-header">CARGANDO DATOS...</div>
         <div id="aviones-container"></div>
-        <div class="leader-only no-print" style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
-            <button class="btn-leader" onclick="openAddAvionModal()" style="flex: 1; min-width: 200px; padding: 10px; font-size: 11px;">+ AGREGAR AVIÓN</button>
-            <button class="btn-accent" onclick="openAddActivityModal()" style="flex: 1; min-width: 200px; padding: 10px; font-size: 11px; font-weight: bold;">⭐ AGREGAR ACTIVIDAD EXTRA</button>
+        <div class="leader-only no-print" style="margin-top: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
+            <button class="btn-leader" onclick="openAddAvionModal()" style="flex: 1; min-width: 200px; padding: 14px; font-size: 12px; border-radius:4px;">+ AGREGAR AVIÓN</button>
+            <button class="btn-accent" onclick="openAddActivityModal()" style="flex: 1; min-width: 200px; padding: 14px; font-size: 12px; font-weight: bold; border-radius:4px; background-color: var(--primary);">⭐ AGREGAR ACTIVIDAD EXTRA</button>
         </div>
     </div>
 </div>
@@ -337,7 +391,7 @@
 <div id="confirm-modal" class="modal">
     <div class="modal-content" style="max-width: 350px; text-align: center;">
         <div class="modal-header" style="border:none; margin-bottom:5px; color:var(--leader-color);">⚠️ CONFIRMACIÓN</div>
-        <div id="confirm-message" style="margin-bottom: 20px; font-size: 12px; font-weight: bold; color: var(--primary);">¿ESTÁS SEGURO?</div>
+        <div id="confirm-message" style="margin-bottom: 25px; font-size: 13px; font-weight: bold; color: var(--primary);">¿ESTÁS SEGURO?</div>
         <div class="modal-footer" style="border:none; padding-top:0;">
             <button class="btn-outline btn-modal-action" onclick="closeConfirmModal()">CANCELAR</button>
             <button class="btn-leader btn-modal-action" id="confirm-yes-btn">CONFIRMAR</button>
@@ -347,8 +401,8 @@
 
 <div id="prompt-modal" class="modal">
     <div class="modal-content" style="max-width: 400px;">
-        <div class="modal-header" id="prompt-title" style="margin-bottom:10px; border:none; padding-bottom:0;">INGRESA LA NOTA</div>
-        <input type="text" id="prompt-input" autocomplete="off" placeholder="Escribe aquí... (Dejar en blanco para borrar)">
+        <div class="modal-header" id="prompt-title" style="margin-bottom:15px; border:none; padding-bottom:0;">INGRESA LA NOTA</div>
+        <input type="text" id="prompt-input" autocomplete="off" placeholder="Escribe aquí... (Dejar en blanco para borrar)" style="font-size: 13px; padding: 10px;">
         <div class="modal-footer">
             <button class="btn-outline btn-modal-action" onclick="closePromptModal()">CANCELAR</button>
             <button class="btn-accent btn-modal-action" id="prompt-save-btn">GUARDAR NOTA</button>
@@ -359,9 +413,9 @@
 <div id="add-avion-modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">✈️ AGREGAR NUEVO AVIÓN</div>
-        <input type="text" id="add-ac-reg" placeholder="MATRÍCULA (EJ: CC-BGM)" maxlength="6" oninput="formatMatricula(this)">
+        <input type="text" id="add-ac-reg" placeholder="MATRÍCULA (EJ: CC-BGM)" maxlength="6" oninput="formatMatricula(this)" style="font-weight: bold; font-size: 14px;">
         <div class="modal-row">
-            <input type="text" id="add-ac-wp" placeholder="WP (T00...)" maxlength="8">
+            <input type="text" id="add-ac-wp" placeholder="WP (T00...)" maxlength="8" style="font-family: monospace;">
             <input type="text" id="add-ac-pos" placeholder="POSICIÓN">
         </div>
         <div class="modal-row">
@@ -372,20 +426,20 @@
         
         <div class="modal-footer">
             <button class="btn-outline btn-modal-action" onclick="closeModal('add-avion-modal')">CANCELAR</button>
-            <button class="btn-leader btn-modal-action" onclick="saveAddAvion()">GUARDAR AVIÓN</button>
+            <button class="btn-primary btn-modal-action" onclick="saveAddAvion()" style="background: var(--primary); color: white;">GUARDAR AVIÓN</button>
         </div>
     </div>
 </div>
 
 <div id="add-activity-modal" class="modal">
     <div class="modal-content">
-        <div class="modal-header" style="color: var(--accent);">⭐ AGREGAR ACTIVIDAD EXTRA</div>
-        <input type="text" id="add-act-title" placeholder="TÍTULO (EJ: REUNIÓN, CURSO, INVENTARIO)">
+        <div class="modal-header" style="color: var(--accent); border-bottom-color: var(--accent);">⭐ AGREGAR ACTIVIDAD EXTRA</div>
+        <input type="text" id="add-act-title" placeholder="TÍTULO (EJ: REUNIÓN, CURSO, INVENTARIO)" style="font-weight: bold;">
         <div class="modal-row">
             <input type="time" id="add-act-start" title="Inicio">
             <input type="time" id="add-act-end" title="Término">
         </div>
-        <div style="font-size: 10px; font-weight: bold; color: var(--comment); margin-bottom: 6px;">ASIGNAR TÉCNICOS:</div>
+        <div style="font-size: 11px; font-weight: bold; color: var(--comment); margin-bottom: 8px;">ASIGNAR TÉCNICOS:</div>
         <div class="tech-grid" id="add-act-techs"></div>
         <div class="modal-footer">
             <button class="btn-outline btn-modal-action" onclick="closeModal('add-activity-modal')">CANCELAR</button>
@@ -397,9 +451,9 @@
 <div id="edit-avion-modal" class="modal">
     <div class="modal-content">
         <div class="modal-header" id="edit-avion-header">✏️ EDITAR TIEMPOS</div>
-        <input type="text" id="edit-ac-reg" placeholder="MATRÍCULA" maxlength="6" oninput="formatMatricula(this)">
+        <input type="text" id="edit-ac-reg" placeholder="MATRÍCULA" maxlength="6" oninput="formatMatricula(this)" style="font-weight: bold;">
         <div class="modal-row">
-            <input type="text" id="edit-ac-wp" placeholder="WP (T00...)" maxlength="8">
+            <input type="text" id="edit-ac-wp" placeholder="WP (T00...)" maxlength="8" style="font-family: monospace;">
             <input type="text" id="edit-ac-pos" placeholder="POSICIÓN">
         </div>
         <div class="modal-row">
@@ -411,7 +465,7 @@
         <div class="modal-footer">
             <button class="btn-danger-outline btn-modal-action" onclick="confirmDeleteAvion()">ELIMINAR</button>
             <button class="btn-outline btn-modal-action" onclick="closeModal('edit-avion-modal')">CANCELAR</button>
-            <button class="btn-leader btn-modal-action" onclick="saveEditAvion()">GUARDAR</button>
+            <button class="btn-primary btn-modal-action" onclick="saveEditAvion()" style="background: var(--primary); color: white;">GUARDAR</button>
         </div>
     </div>
 </div>
@@ -419,10 +473,10 @@
 <div id="add-task-modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">📝 AGREGAR TAREA</div>
-        <input type="text" id="add-task-desc" placeholder="TÍTULO DE LA TAREA" oninput="handleTaskDescInput(this, 'add-task-tango')">
-        <input type="text" id="add-task-tango" placeholder="T00..." maxlength="8" oninput="autoFormatTango(this)">
+        <input type="text" id="add-task-desc" placeholder="TÍTULO DE LA TAREA" oninput="handleTaskDescInput(this, 'add-task-tango')" style="font-weight: bold;">
+        <input type="text" id="add-task-tango" placeholder="T00..." maxlength="8" oninput="autoFormatTango(this)" style="font-family: monospace;">
         
-        <div style="font-size: 10px; font-weight: bold; color: var(--comment); margin-bottom: 6px;">ASIGNAR TÉCNICOS:</div>
+        <div style="font-size: 11px; font-weight: bold; color: var(--comment); margin-bottom: 8px;">ASIGNAR TÉCNICOS:</div>
         <div class="tech-grid" id="add-task-techs"></div>
         
         <div class="modal-footer">
@@ -435,10 +489,10 @@
 <div id="edit-task-modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">✏️ EDITAR TAREA / ACTIVIDAD</div>
-        <input type="text" id="edit-task-desc" placeholder="TÍTULO DE LA TAREA" oninput="handleTaskDescInput(this, 'edit-task-tango')">
-        <input type="text" id="edit-task-tango" placeholder="T00..." maxlength="8" oninput="autoFormatTango(this)">
+        <input type="text" id="edit-task-desc" placeholder="TÍTULO DE LA TAREA" oninput="handleTaskDescInput(this, 'edit-task-tango')" style="font-weight: bold;">
+        <input type="text" id="edit-task-tango" placeholder="T00..." maxlength="8" oninput="autoFormatTango(this)" style="font-family: monospace;">
         
-        <div style="font-size: 10px; font-weight: bold; color: var(--comment); margin-bottom: 6px;">TÉCNICOS ASIGNADOS:</div>
+        <div style="font-size: 11px; font-weight: bold; color: var(--comment); margin-bottom: 8px;">TÉCNICOS ASIGNADOS:</div>
         <div class="tech-grid" id="edit-task-techs"></div>
         
         <div class="modal-footer">
@@ -538,7 +592,6 @@
         const btnToggle = document.getElementById('btn-mode-toggle');
         btnToggle.innerText = "MODO TEAM LEADER";
         btnToggle.style.backgroundColor = "var(--leader-color)";
-        btnToggle.style.color = "#0d1117";
         render();
     }
 
@@ -548,7 +601,6 @@
         const btnToggle = document.getElementById('btn-mode-toggle');
         btnToggle.innerText = "MODO TÉCNICO";
         btnToggle.style.backgroundColor = "var(--accent)";
-        btnToggle.style.color = "#0d1117";
         render();
     }
 
@@ -739,11 +791,11 @@
 
         const priorityLabel = t.priority ? '<span class="priority-badge">URGENTE</span>' : '';
         const helpLabel = t.help ? '<span class="help-badge">APOYO</span>' : '';
-        const planePrefix = showPlaneReg ? `<strong style="color:var(--accent);">[${avion.reg}]</strong> ` : '';
+        const planePrefix = showPlaneReg ? `<strong style="color:var(--primary); background:#e2e8f0; padding:1px 4px; border-radius:2px;">${avion.reg}</strong> ` : '';
 
         return `
             <div class="task-item ${t.done ? 'completed' : ''} ${t.priority ? 'priority' : ''} ${t.help ? 'help-needed' : ''}">
-                <div class="status-toggle no-print" onclick="toggleTask(${avion.id}, ${t.id})"></div>
+                <div class="status-toggle no-print" onclick="toggleTask(${avion.id}, ${t.id})">✓</div>
                 <div class="task-main">
                     <div class="task-info">
                         <div class="task-desc">${planePrefix}${cleanDesc}${tangoDisplay}${priorityLabel}${helpLabel}</div>
@@ -752,7 +804,7 @@
                     </div>
                     <div class="action-bar no-print">
                         <div class="leader-only leader-wrapper">
-                            <button class="action-btn ${t.priority ? 'active-danger' : ''}" onclick="togglePriority(${avion.id}, ${t.id})">🔥 URG</button>
+                            <button class="action-btn ${t.priority ? 'active-danger' : ''}" onclick="togglePriority(${avion.id}, ${t.id})">🔥 URGENTE</button>
                         </div>
                         <button class="action-btn ${t.help ? 'active-help' : ''}" onclick="toggleHelp(${avion.id}, ${t.id})">🆘 APOYO</button>
                         <button class="action-btn" onclick="editTaskComment(${avion.id}, ${t.id})">💬 NOTA</button>
@@ -793,7 +845,7 @@
             const div = document.createElement('div'); div.className = 'avion-section';
             let html = `
                 <div class="avion-title">
-                    <div class="avion-info-main" style="color:var(--accent);">👨‍🔧 TÉCNICO: ${tech}</div>
+                    <div class="avion-info-main">👨‍🔧 TÉCNICO: <span style="color:#bae6fd;">${tech}</span></div>
                 </div>
             `;
             tasks.forEach(({avion, task}) => { html += generateTaskHTML(avion, task, true); });
@@ -835,7 +887,7 @@
             const timesDisplay = (avion.start || avion.end) ? `<span class="avion-times">${avion.start || '--:--'} - ${avion.end || '--:--'}</span>` : '';
             
             // Variación visual si es una Actividad
-            const headerStyle = avion.isActivity ? 'style="border-left-color: var(--accent);"' : '';
+            const headerStyle = avion.isActivity ? 'style="background-color: #0369a1;"' : '';
             
             let avionActionBtns = '';
             if (avion.isActivity) {
