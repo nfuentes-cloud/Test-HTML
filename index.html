@@ -79,7 +79,7 @@
         
         input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(27, 0, 136, 0.1); }
         input { flex: 1; min-width: 130px; }
-        input.time-input { min-width: auto; width: 75px; text-align: center; font-weight: bold; } /* Cambio para llenado inteligente 24h */
+        input.time-input { min-width: auto; width: 75px; text-align: center; font-weight: bold; }
         
         button { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: 700; transition: all 0.2s; }
         button:hover { opacity: 0.9; }
@@ -120,9 +120,9 @@
         
         .logo-container svg { width: 140px; height: auto; }
         
-        /* Modificación: Header flexible para alinear en 2 líneas centradas */
+        /* Modificación: Tamaño ajustado a 1.25em para hacer el turno un poco más pequeño */
         .document-header { 
-            font-size: 1.4em; font-weight: 800; color: var(--primary); margin: 0; 
+            font-size: 1.25em; font-weight: 800; color: var(--primary); margin: 0; 
             flex: 1; text-align: center; display: flex; flex-direction: column; 
             align-items: center; justify-content: center;
         }
@@ -521,7 +521,6 @@
     const MAINTENIX_URL = "https://maintenix.lan.com/maintenix/common/ToDoList.jsp";
     const SESSION_EXPIRATION_MS = 12 * 60 * 60 * 1000;
 
-    // Modificación: Siempre se restablece al default al recargar
     let currentViewMode = 'default';
     let currentTechFilter = ''; 
     
@@ -598,10 +597,10 @@
                  fechaDisplay = new Date(data.fecha + 'T00:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
             }
             
-            // Modificación: Renderiza el turno y fecha arriba, y TL centrado abajo en caso de existir
             const turnoInfo = `${data.turno || ''} | ${fechaDisplay}`;
             const jefeInfo = data.jefe ? `TL: ${data.jefe}` : '';
-            document.getElementById('display-header').innerHTML = `<span>${turnoInfo}</span>${jefeInfo ? `<span style="font-size: 0.8em; margin-top: 4px;">${jefeInfo}</span>` : ''}`;
+            // Modificación: Ambas líneas heredan exactamente el mismo tamaño sin restricción de 0.8em
+            document.getElementById('display-header').innerHTML = `<span>${turnoInfo}</span>${jefeInfo ? `<span style="margin-top: 4px;">${jefeInfo}</span>` : ''}`;
         } else {
             document.getElementById('display-header').innerText = `CONFIGURAR TURNO`;
         }
@@ -697,13 +696,10 @@
     }
 
     function resetLocalFilter() {
-        // Modificación: Restablece filtro de técnico Y modo de vista al default
         currentTechFilter = '';
         document.getElementById('local-tech-filter').value = '';
-        
         currentViewMode = 'default';
         document.getElementById('view-mode-select').value = 'default';
-        
         render();
     }
 
@@ -719,19 +715,18 @@
         }
     }
 
-    // Modificación: Función inteligente para el llenado en formato 24 hrs
     function formatTime(input) {
-        let val = input.value.replace(/\D/g, ''); // Deja solo números
+        let val = input.value.replace(/\D/g, ''); 
         if (val.length >= 3) {
             val = val.substring(0, 2) + ':' + val.substring(2, 4);
         }
         if (val.length >= 2) {
             let h = parseInt(val.substring(0, 2));
-            if (h > 23) val = '23' + val.substring(2); // Máximo 23 horas
+            if (h > 23) val = '23' + val.substring(2); 
         }
         if (val.length >= 5) {
             let m = parseInt(val.substring(3, 5));
-            if (m > 59) val = val.substring(0, 3) + '59'; // Máximo 59 minutos
+            if (m > 59) val = val.substring(0, 3) + '59'; 
         }
         input.value = val;
     }
@@ -816,7 +811,6 @@
         `;
     }
 
-    // Vista: Agrupar separando a cada técnico de manera individual
     function renderGroupedByTech(data, container) {
         let grouped = {};
         shiftTechs.forEach(tech => grouped[tech] = []);
@@ -857,7 +851,6 @@
         }
     }
 
-    // VISTA: Agrupar por el grupo exacto de técnicos asignados
     function renderGroupedByExactTechs(data, container) {
         let grouped = {};
 
@@ -873,7 +866,6 @@
             }
         });
 
-        // Ordenamos alfabéticamente dejando "SIN ASIGNAR" al final
         let keys = Object.keys(grouped).sort((a, b) => {
             if (a === "SIN ASIGNAR") return 1;
             if (b === "SIN ASIGNAR") return -1;
@@ -1206,7 +1198,7 @@
         openAddTaskModal, saveAddTask, openEditTaskModal, saveEditTask, confirmDeleteTask,
         editAvionComment, editTaskComment, closeConfirmModal, closePromptModal,
         changeViewMode, applyLocalFilter, resetLocalFilter, handleTaskDescInput,
-        formatTime // Añadido al entorno global para funcionar con el HTML
+        formatTime
     });
 
 </script>
