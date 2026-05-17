@@ -18,6 +18,19 @@
             --comment: #64748b;
         }
 
+        /* TEMA MAINTENIX (IFS) INYECTADO DESDE SEGUNDO HTML */
+        [data-theme="maintenix"] {
+            --primary: #005da4;
+            --accent: #ed1650;
+            --bg: #f5f5f5;
+            --light-gray: #eef4f9;
+            --border: #b0c4de;
+            --leader-color: #d69e2e;
+            --danger: #d93838;
+            --help: #e67e22;
+            --comment: #555555;
+        }
+
         body, input, select, button, textarea {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-transform: uppercase;
@@ -28,9 +41,10 @@
             color: var(--primary);
             margin: 0;
             padding: 20px;
+            transition: background-color 0.3s;
         }
 
-        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.3s; }
 
         /* Barra superior general */
         .top-bar {
@@ -127,7 +141,7 @@
         }
         
         /* Listado de Aviones y Tareas */
-        .avion-section { margin-bottom: 30px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+        .avion-section { margin-bottom: 30px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); overflow: hidden; }
 
         .avion-title {
             font-size: 1.1em; font-weight: bold; display: flex; align-items: center; justify-content: space-between;
@@ -252,10 +266,40 @@
         .modal-footer { display: flex; gap: 10px; margin-top: 10px; padding-top: 20px; border-top: 1px solid var(--border); }
         .btn-modal-action { flex: 1; padding: 12px 0; font-size: 11px; text-align: center; display: flex; justify-content: center; align-items: center; border-radius: 4px;}
 
+        /* MODIFICADORES DEL TEMA MAINTENIX APLICADOS AL DOM EXISTENTE */
+        [data-theme="maintenix"] body { font-family: Arial, Helvetica, sans-serif; font-size: 11px; }
+        [data-theme="maintenix"] .container { border: 1px solid var(--border); border-radius: 0; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+        [data-theme="maintenix"] .top-bar, [data-theme="maintenix"] .view-controls { background-color: #e8e8e8; border-radius: 0; border: 1px solid var(--border); }
+        [data-theme="maintenix"] .btn-top, [data-theme="maintenix"] button, [data-theme="maintenix"] .action-btn {
+            background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+            border: 1px solid #999; border-radius: 3px; color: #333;
+        }
+        [data-theme="maintenix"] .btn-top:hover, [data-theme="maintenix"] button:hover, [data-theme="maintenix"] .action-btn:hover {
+            background: linear-gradient(to bottom, #e5e5e5 0%, #cccccc 100%); border-color: #777; color: #333;
+        }
+        [data-theme="maintenix"] button.btn-leader { color: var(--primary); border-color: var(--primary); font-weight: bold; background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%); }
+        [data-theme="maintenix"] .header-controls { background-color: #fffae6; border-radius: 0; border-left: 4px solid var(--leader-color); }
+        [data-theme="maintenix"] .leader-title { color: #b8860b; }
+        [data-theme="maintenix"] .avion-section { border: 1px solid var(--border); border-radius: 0; box-shadow: none; }
+        [data-theme="maintenix"] .avion-title { background: var(--light-gray); color: var(--primary); border-bottom: 1px solid var(--border); border-radius: 0; border-left: 4px solid var(--primary); }
+        [data-theme="maintenix"] .avion-title.activity-header { background: #fce4ec; color: var(--accent); border-bottom-color: #f48fb1; border-left: 4px solid var(--accent); }
+        [data-theme="maintenix"] .action-bar.avion-bar .action-btn { background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%); color: #333; border-color: #999; }
+        [data-theme="maintenix"] .avion-pos, [data-theme="maintenix"] .avion-times { background: white; color: var(--comment); border: 1px solid #ccc; border-radius: 2px; }
+        [data-theme="maintenix"] .task-container { border-radius: 0; }
+        [data-theme="maintenix"] .task-item { border-radius: 0; border-bottom: 1px solid #e0e0e0; }
+        [data-theme="maintenix"] .task-item:nth-child(even) { background-color: #fcfcfc; }
+        [data-theme="maintenix"] .task-item.completed { border-left: 4px solid #10b981; }
+        [data-theme="maintenix"] .task-item.priority { border-left: 4px solid var(--accent); background-color: #fff5f7; }
+        [data-theme="maintenix"] .task-item.help-needed { border-left: 4px solid var(--help); background-color: #fffaf0; }
+        [data-theme="maintenix"] .tango-link, [data-theme="maintenix"] .task-item .tango-link { color: #0044cc; }
+        [data-theme="maintenix"] .status-toggle { border-radius: 2px; border: 1px solid #999; }
+        [data-theme="maintenix"] .modal-content { border-radius: 0; border: 1px solid #555; background-color: #f5f5f5; }
+        [data-theme="maintenix"] .modal-header { background: var(--primary); color: white; padding: 10px 15px; font-size: 13px; margin: -25px -25px 20px -25px; border-bottom: 2px solid #003d73; }
+
         @media print {
             @page { size: letter; margin: 1cm; } .no-print { display: none !important; }
             body { padding: 0; background-color: white; font-size: 11px; }
-            .container { padding: 0; box-shadow: none; max-width: 100%; }
+            .container { padding: 0; box-shadow: none; max-width: 100%; border: none !important; }
             .main-header-wrapper { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); }
             
             .avion-section { margin-bottom: 20px; box-shadow: none; border: 1px solid var(--border); border-radius: 0; }
@@ -264,7 +308,7 @@
                 padding: 8px 12px; border-bottom: 1px solid var(--border); border-radius: 0;
                 -webkit-print-color-adjust: exact; print-color-adjust: exact;
             }
-            .avion-pos, .avion-times { background: transparent; color: var(--primary); padding: 0; font-weight: bold; }
+            .avion-pos, .avion-times { background: transparent; color: var(--primary); padding: 0; font-weight: bold; border: none !important; }
             .avion-comment { color: #4a5568; }
             .tango-link, .avion-title .tango-link { color: var(--primary); text-decoration: none; }
             
@@ -308,12 +352,22 @@
                 <option value="tech-group">👥 AGRUPAR POR GRUPO EXACTO</option>
             </select>
         </div>
+
         <div style="display: flex; gap: 8px; align-items: center;">
-            <span style="font-size: 11px; font-weight: bold; color: var(--comment);">MI FILTRO LOCAL:</span>
+            <span style="font-size: 11px; font-weight: bold; color: var(--comment);">FILTRO:</span>
             <select id="local-tech-filter" onchange="applyLocalFilter()" style="min-width: 160px;">
                 <option value="">TODOS LOS TÉCNICOS</option>
             </select>
             <button class="btn-outline" onclick="resetLocalFilter()" style="padding: 8px 12px; font-size: 10px;">RESTABLECER</button>
+        </div>
+
+        <!-- SELECTOR DE TEMA AGREGADO -->
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="font-size: 11px; font-weight: bold; color: var(--comment);">TEMA:</span>
+            <select id="theme-select" onchange="changeTheme()" style="min-width: 140px; font-weight: bold;">
+                <option value="latam">🔴 LATAM (ORIGINAL)</option>
+                <option value="maintenix">🔵 MAINTENIX (IFS)</option>
+            </select>
         </div>
     </div>
 
@@ -530,6 +584,17 @@
     document.getElementById('global-turno-select').value = activeTurno;
     document.getElementById('view-mode-select').value = currentViewMode;
 
+    // MEMORIA LOCAL PARA TEMA VISUAL (LATAM vs MAINTENIX)
+    let currentTheme = localStorage.getItem('latam_theme') || 'latam';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    document.getElementById('theme-select').value = currentTheme;
+
+    function changeTheme() {
+        currentTheme = document.getElementById('theme-select').value;
+        localStorage.setItem('latam_theme', currentTheme);
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    }
+
     onAuthStateChanged(auth, (user) => {
         if (user) {
             const userEmail = user.email.toLowerCase();
@@ -744,13 +809,32 @@
 
     function handleTaskDescInput(inputElem, tangoElemId) {
         let val = inputElem.value;
-        const regex = /(T00[A-Z0-9]{5})/i;
-        const match = val.match(regex);
-        if (match) {
-            const tangoCode = match[1].toUpperCase();
+        // Buscar TODAS las ocurrencias de T00...
+        const regex = /(T00[A-Z0-9]{5})/gi;
+        const matches = [...val.matchAll(regex)];
+
+        if (matches.length > 0) {
+            // Extraer EXCLUSIVAMENTE LA ÚLTIMA coincidencia
+            const lastMatch = matches[matches.length - 1];
+            const tangoCode = lastMatch[0].toUpperCase();
+
+            // Ponerlo en el input si está vacío
             const tangoInput = document.getElementById(tangoElemId);
-            if (!tangoInput.value) { tangoInput.value = tangoCode; }
-            inputElem.value = val.replace(new RegExp(`[\\[\\(]?${tangoCode}[\\]\\)]?`, 'i'), '').trim();
+            if (!tangoInput.value) { 
+                tangoInput.value = tangoCode; 
+            }
+
+            // Remover del string principal SÓLO la última coincidencia encontrada
+            const beforeMatch = val.substring(0, lastMatch.index);
+            const afterMatch = val.substring(lastMatch.index + lastMatch[0].length);
+            val = beforeMatch + afterMatch;
+
+            // Limpiar brackets y paréntesis que hayan quedado vacíos "[]" o "()" al final
+            val = val.replace(/\[\s*\]|\(\s*\)/g, '').trim();
+            // Limpiar guiones o espacios extras al final
+            val = val.replace(/[- ]+$/, '').trim();
+
+            inputElem.value = val;
         }
     }
 
@@ -1238,7 +1322,7 @@
         openAddTaskModal, saveAddTask, openEditTaskModal, saveEditTask, confirmDeleteTask,
         editAvionComment, editTaskComment, closeConfirmModal, closePromptModal,
         changeViewMode, applyLocalFilter, resetLocalFilter, handleTaskDescInput,
-        formatTime, changeTurno
+        formatTime, changeTurno, changeTheme
     });
 
 </script>
