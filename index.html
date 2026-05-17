@@ -6,18 +6,41 @@
     <title>Programación Diaria - LATAM</title>
     <style>
         :root {
-            /* Colores Corporativos LATAM */
-            --primary: #1B0088; /* Indigo LATAM */
-            --accent: #E8114B;  /* Rojo/Coral LATAM */
-            --secondary: #00A6DE; /* Azul Claro LATAM para actividades */
+            /* Colores Corporativos LATAM (Modo Día) */
+            --primary: #1B0088; 
+            --accent: #E8114B;  
+            --secondary: #00A6DE; 
             --bg: #f4f5f7;
             --task-bg: #ffffff;
+            --panel-bg: #ffffff;
             --border: #cbd5e0;
             --leader-color: #d69e2e;
             --danger: #E8114B; 
             --help: #dd6b20; 
             --comment: #718096;
             --text-main: #2d3748;
+            --top-bar-bg: #e2e8f0;
+            --logo-primary: #1b0088;
+            --logo-accent: #ed1650;
+        }
+
+        /* Variables Tácticas (Modo Noche) */
+        [data-theme="dark"] {
+            --primary: #8ba2ff; /* Índigo adaptado para contraste */
+            --accent: #ff4d79;  
+            --secondary: #38bdf8; 
+            --bg: #1a202c;
+            --task-bg: #2d3748;
+            --panel-bg: #2d3748;
+            --border: #4a5568;
+            --leader-color: #f6e05e;
+            --danger: #fc8181; 
+            --help: #fbd38d; 
+            --comment: #a0aec0;
+            --text-main: #f7fafc;
+            --top-bar-bg: #171923;
+            --logo-primary: #ffffff; /* Logo LATAM blanco en modo oscuro */
+            --logo-accent: #ff4d79;
         }
 
         body, input, select, button, textarea {
@@ -30,6 +53,7 @@
             color: var(--text-main);
             margin: 0;
             padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .container { max-width: 1000px; margin: 0 auto; }
@@ -37,8 +61,9 @@
         /* Barra superior general */
         .top-bar {
             display: flex; justify-content: space-between; margin-bottom: 10px;
-            background-color: #e2e8f0; padding: 12px;
+            background-color: var(--top-bar-bg); padding: 12px;
             border-radius: 6px; border: 1px solid var(--border); align-items: center;
+            transition: all 0.3s ease;
         }
 
         .btn-top {
@@ -47,29 +72,37 @@
             border-radius: 4px; cursor: pointer; font-weight: bold; border: none;
         }
 
+        .btn-icon-small {
+            width: 32px; height: 32px; font-size: 16px; padding: 0;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 4px; cursor: pointer; background: transparent; 
+            border: 1px solid var(--comment); color: var(--text-main); transition: 0.2s;
+        }
+        .btn-icon-small:hover { background: var(--comment); color: var(--bg); }
+
         .leader-wrapper { display: contents; } 
         body:not(.team-leader-mode) .leader-only { display: none !important; }
 
         /* Controles de vista y filtros locales */
         .view-controls {
             display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; 
-            background: #ffffff; padding: 12px; border-radius: 6px; 
+            background: var(--panel-bg); padding: 12px; border-radius: 6px; 
             border: 1px solid var(--border); align-items: center; justify-content: space-between;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.3s ease;
         }
 
         /* ==========================================
            PANEL DE CONTROL TEAM LEADER
            ========================================== */
         .header-controls {
-            background-color: #fffaf0; border: 1px solid #fbd38d;
+            background-color: var(--panel-bg); border: 1px solid var(--leader-color);
             border-left: 6px solid var(--leader-color); padding: 15px;
-            border-radius: 6px; margin-bottom: 25px;
+            border-radius: 6px; margin-bottom: 25px; transition: all 0.3s ease;
         }
 
         .leader-panel-header {
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid #fbd38d; padding-bottom: 10px; margin-bottom: 12px;
+            border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px;
         }
 
         .leader-title { font-size: 1.05em; font-weight: 800; color: var(--leader-color); display: flex; align-items: center; gap: 8px; }
@@ -77,11 +110,11 @@
         .control-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 
         input, select, button {
-            padding: 6px 10px; border: 1px solid var(--border);
-            border-radius: 4px; font-size: 11px; outline: none; box-sizing: border-box;
+            padding: 6px 10px; border: 1px solid var(--border); background-color: var(--task-bg); color: var(--text-main);
+            border-radius: 4px; font-size: 11px; outline: none; box-sizing: border-box; transition: background-color 0.3s, color 0.3s;
         }
         
-        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(27, 0, 136, 0.1); }
+        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(139, 162, 255, 0.2); }
         input { flex: 1; min-width: 130px; }
         input[type="time"] { min-width: auto; width: 90px; }
         
@@ -89,21 +122,23 @@
         button:hover { opacity: 0.9; }
         
         .btn-accent { background-color: var(--accent); color: white; }
-        .btn-leader { background-color: var(--leader-color); color: #fff; }
+        .btn-leader { background-color: var(--leader-color); color: #fff; border:none; }
         .btn-clear { background-color: var(--danger); color: white; }
         .btn-outline { background-color: transparent; border: 1px solid var(--comment); color: var(--comment); }
-        .btn-outline:hover { background-color: var(--comment); color: white; }
+        .btn-outline:hover { background-color: var(--comment); color: var(--bg); }
         .btn-danger-outline { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
         .btn-danger-outline:hover { background: var(--danger); color: white; }
 
         /* Etiquetas de técnicos */
         #tech-pills-container {
             display: flex; flex-wrap: wrap; gap: 8px; width: 100%;
-            padding: 10px; background: rgba(255,255,255,0.7); border-radius: 4px; border: 1px dashed #cbd5e0;
+            padding: 10px; background: rgba(0,0,0,0.05); border-radius: 4px; border: 1px dashed var(--border);
         }
 
+        [data-theme="dark"] #tech-pills-container { background: rgba(255,255,255,0.05); }
+
         .tech-pill {
-            background-color: #e2e8f0; color: var(--primary); border: 1px solid #cbd5e0;
+            background-color: var(--top-bar-bg); color: var(--primary); border: 1px solid var(--border);
             padding: 6px 14px; border-radius: 20px; font-size: 11px;
             display: inline-flex; align-items: center; gap: 8px; font-weight: bold;
         }
@@ -150,6 +185,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             overflow: hidden;
             page-break-inside: avoid;
+            transition: all 0.3s ease;
         }
 
         .avion-title {
@@ -164,17 +200,18 @@
             flex-wrap: wrap; 
             gap: 12px;
             margin: 0;
+            transition: background-color 0.3s ease;
         }
 
         .avion-info-main { flex: 1; min-width: 250px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
         .avion-reg { font-size: 1.15em; font-weight: 900; letter-spacing: 1px; }
         
-        .avion-pos { color: var(--primary); background: #ffffff; padding: 3px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 800; }
+        .avion-pos { color: #1a202c; background: #ffffff; padding: 3px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 800; }
         .avion-times { color: #ffffff; font-size: 0.85em; display: inline-block; background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 4px; font-weight: bold; }
         .avion-comment { font-size: 0.85em; color: #e2e8f0; margin-top: 6px; font-weight: normal; font-style: italic; width: 100%; }
 
         .tango-link { color: var(--primary); text-decoration: underline; cursor: pointer; font-weight: bold; padding: 2px 4px; border-radius: 3px; transition: background 0.2s; }
-        .tango-link:hover { background-color: rgba(27, 0, 136, 0.1); }
+        .tango-link:hover { background-color: rgba(139, 162, 255, 0.1); }
         
         .tango-link-header { color: #ffffff; text-decoration: underline; cursor: pointer; font-weight: bold; }
         .tango-link-header:hover { color: #cbd5e0; }
@@ -186,18 +223,25 @@
 
         .task-item {
             display: flex; padding: 12px 16px; align-items: flex-start;
-            border-bottom: 1px solid #edf2f7; background-color: transparent;
+            border-bottom: 1px solid var(--border); background-color: transparent;
             transition: all 0.3s ease;
         }
         .task-item:last-child { border-bottom: none; }
 
         /* Modos Urgente / Ayuda */
-        @keyframes pulseDanger { 0% { background-color: #fffafb; } 50% { background-color: #ffe5e5; } 100% { background-color: #fffafb; } }
-        @keyframes pulseHelp { 0% { background-color: #fffdfa; } 50% { background-color: #fef0d9; } 100% { background-color: #fffdfa; } }
+        @keyframes pulseDangerDark { 0% { background-color: rgba(252, 129, 129, 0.05); } 50% { background-color: rgba(252, 129, 129, 0.15); } 100% { background-color: rgba(252, 129, 129, 0.05); } }
+        @keyframes pulseHelpDark { 0% { background-color: rgba(251, 211, 141, 0.05); } 50% { background-color: rgba(251, 211, 141, 0.15); } 100% { background-color: rgba(251, 211, 141, 0.05); } }
+        
+        @keyframes pulseDangerLight { 0% { background-color: #fffafb; } 50% { background-color: #ffe5e5; } 100% { background-color: #fffafb; } }
+        @keyframes pulseHelpLight { 0% { background-color: #fffdfa; } 50% { background-color: #fef0d9; } 100% { background-color: #fffdfa; } }
 
-        .task-item.priority { border-left: 4px solid var(--danger); animation: pulseDanger 2s infinite ease-in-out; }
-        .task-item.help-needed { border-left: 4px solid var(--help); animation: pulseHelp 2s infinite ease-in-out; }
-        .task-item.priority.help-needed { border-left: 4px solid var(--danger); background: linear-gradient(90deg, #ffe5e5 0%, #fef0d9 100%); }
+        .task-item.priority { border-left: 4px solid var(--danger); animation: pulseDangerLight 2s infinite ease-in-out; }
+        .task-item.help-needed { border-left: 4px solid var(--help); animation: pulseHelpLight 2s infinite ease-in-out; }
+        
+        [data-theme="dark"] .task-item.priority { animation: pulseDangerDark 2s infinite ease-in-out; }
+        [data-theme="dark"] .task-item.help-needed { animation: pulseHelpDark 2s infinite ease-in-out; }
+
+        .task-item.priority.help-needed { border-left: 4px solid var(--danger); background: linear-gradient(90deg, rgba(252,129,129,0.1) 0%, rgba(251,211,141,0.1) 100%); }
 
         .priority-badge { color: var(--danger); font-weight: 800; font-size: 0.85em; margin-left: 8px; background: rgba(232, 17, 75, 0.1); padding: 2px 6px; border-radius: 4px; }
         .help-badge { color: var(--help); font-weight: 800; font-size: 0.85em; margin-left: 8px; background: rgba(221, 107, 32, 0.1); padding: 2px 6px; border-radius: 4px; }
@@ -205,13 +249,13 @@
         .status-toggle {
             width: 22px; height: 22px; min-width: 22px; min-height: 22px;
             box-sizing: border-box; border: 2px solid var(--primary);
-            background-color: white; margin-right: 15px; margin-top: 2px;
+            background-color: transparent; margin-right: 15px; margin-top: 2px;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
             font-weight: bold; color: transparent; font-size: 14px; transition: all 0.2s; user-select: none; border-radius: 4px;
         }
 
         .task-item.completed .status-toggle { background-color: #48bb78; border-color: #48bb78; color: white; }
-        .task-item.completed { animation: none !important; border-left: none !important; background-color: #f8fafc !important; opacity: 0.7;}
+        .task-item.completed { animation: none !important; border-left: none !important; background-color: var(--top-bar-bg) !important; opacity: 0.6;}
         .task-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
         .task-info { width: 100%; transition: all 0.3s ease; }
         .task-item.completed .task-info, .task-item.completed .tango-link { text-decoration: line-through; color: var(--comment); }
@@ -235,7 +279,7 @@
             min-width: 60px; 
             padding: 6px 8px; font-size: 10px; font-weight: 700;
             border-radius: 4px; border: 1px solid var(--border);
-            background: #ffffff; color: var(--text-main);
+            background: var(--task-bg); color: var(--text-main);
             cursor: pointer; transition: all 0.2s; 
             display: flex; align-items: center; justify-content: center; gap: 4px;
             text-align: center;
@@ -244,12 +288,14 @@
         .action-btn:hover { background: var(--bg); border-color: var(--comment); }
         .action-btn.active-danger { background: var(--danger); color: white; border-color: var(--danger); }
         .action-btn.active-help { background: var(--help); color: white; border-color: var(--help); }
-        .btn-highlight { color: var(--primary); border-color: var(--primary); background-color: rgba(27, 0, 136, 0.05); }
-        .btn-highlight:hover { background-color: var(--primary); color: white; }
+        .btn-highlight { color: var(--primary); border-color: var(--primary); background-color: rgba(139, 162, 255, 0.05); }
+        .btn-highlight:hover { background-color: var(--primary); color: #fff; }
 
-        /* Modal Styles kept intact but visually polished */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(27, 0, 136, 0.7); backdrop-filter: blur(3px); }
-        .modal-content { background-color: #fff; margin: 6% auto; padding: 24px; border: none; width: 90%; max-width: 480px; border-radius: 8px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); max-height: 85vh; overflow-y: auto; }
+        /* ==========================================
+           MODALS (VENTANAS FLOTANTES)
+           ========================================== */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(3px); }
+        .modal-content { background-color: var(--panel-bg); margin: 6% auto; padding: 24px; border: 1px solid var(--border); width: 90%; max-width: 480px; border-radius: 8px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); max-height: 85vh; overflow-y: auto; color: var(--text-main); transition: background-color 0.3s; }
         .modal-header { font-weight: 900; font-size: 1.2em; margin-bottom: 20px; color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
         .modal-content input, .modal-content select { width: 100%; margin-bottom: 12px; box-sizing: border-box; padding: 10px; font-size: 12px; }
         .modal-row { display: flex; gap: 10px; }
@@ -257,41 +303,44 @@
         .tech-grid { display: flex; flex-wrap: wrap; gap: 8px; max-height: 180px; overflow-y: auto; margin-bottom: 15px; padding: 4px; }
         .tech-checkbox-label { display: flex; align-items: center; justify-content: center; background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 700; transition: all 0.2s; user-select: none; color: var(--comment); text-align: center; }
         .tech-checkbox-label:hover { border-color: var(--primary); color: var(--primary); }
-        .tech-checkbox-label:has(input:checked) { border-color: var(--primary); background: var(--primary); color: white; box-shadow: 0 2px 5px rgba(27, 0, 136, 0.3); }
+        .tech-checkbox-label:has(input:checked) { border-color: var(--primary); background: var(--primary); color: white; box-shadow: 0 2px 5px rgba(139, 162, 255, 0.3); }
         .tech-checkbox-label input { display: none; }
         .modal-footer { display: flex; gap: 10px; margin-top: 10px; padding-top: 20px; border-top: 1px solid var(--border); }
         .btn-modal-action { flex: 1; padding: 12px 0; font-size: 11px; text-align: center; border-radius: 4px; }
 
         /* ==========================================
-           IMPRESIÓN (PDF) OPTIMIZADA
+           IMPRESIÓN (PDF) OPTIMIZADA (Siempre esquema claro)
            ========================================== */
         @media print {
             @page { size: letter; margin: 1cm; } 
             .no-print { display: none !important; }
-            body { padding: 0; background-color: white; font-size: 11px; color: black; }
+            body, html { padding: 0; background-color: white !important; font-size: 11px; color: black !important; }
             
+            /* Forzar colores claros para impresión incluso si el dark mode está activo */
             .document-header-container { border-bottom: 2px solid black; margin-bottom: 15px; padding-bottom: 8px; }
-            .document-header-text { color: black; font-size: 1.2em; }
-            .latam-logo-header { height: 30px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .document-header-text { color: black !important; font-size: 1.2em; }
+            .latam-logo-header path[fill="var(--logo-primary)"] { fill: #1b0088 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .latam-logo-header path[fill="var(--logo-accent)"] { fill: #ed1650 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .latam-logo-header { height: 30px; }
 
-            .avion-section { margin-bottom: 15px; border: 1px solid #000; box-shadow: none; border-radius: 0; break-inside: avoid; }
+            .avion-section { margin-bottom: 15px; border: 1px solid #000 !important; background-color: white !important; box-shadow: none; border-radius: 0; break-inside: avoid; }
             .avion-title { background-color: #f0f0f0 !important; color: black !important; padding: 8px 12px; border-bottom: 1px solid #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .avion-reg { font-size: 1.2em; }
-            .avion-pos { background: none; border: 1px solid black; color: black; }
-            .avion-times { background: none; color: black; }
-            .avion-comment { color: #333; }
-            .tango-link-header { color: black; text-decoration: none; font-weight: bold; }
+            .avion-pos { background: none !important; border: 1px solid black; color: black !important; }
+            .avion-times { background: none !important; color: black !important; }
+            .avion-comment { color: #333 !important; }
+            .tango-link-header { color: black !important; text-decoration: none; font-weight: bold; }
             
-            .task-item { border-bottom: 1px solid #ddd; padding: 8px 12px; break-inside: avoid; }
-            .task-item:last-child { border-bottom: none; }
-            .task-item.completed .task-info { opacity: 0.8; text-decoration: line-through; color: #555; }
-            .task-desc { color: black; }
-            .task-techs { color: #333; }
-            .priority-badge, .help-badge { border: 1px solid black; background: none; padding: 1px 4px; }
+            .task-item { border-bottom: 1px solid #ddd !important; background-color: white !important; padding: 8px 12px; break-inside: avoid; }
+            .task-item:last-child { border-bottom: none !important; }
+            .task-item.completed .task-info { opacity: 0.8; text-decoration: line-through; color: #555 !important; }
+            .task-desc { color: black !important; }
+            .task-techs { color: #333 !important; }
+            .priority-badge, .help-badge { border: 1px solid black; background: none !important; padding: 1px 4px; color: black !important; }
             
             .task-item.completed .status-toggle { -webkit-print-color-adjust: exact; print-color-adjust: exact; background-color: black !important; border-color: black !important; color: white !important; }
-            .status-toggle { margin-top: 0px; width: 14px; min-width: 14px; height: 14px; min-height: 14px; font-size: 10px; border-color: black; }
-            .tango-link { text-decoration: none; color: black; font-weight: bold; }
+            .status-toggle { margin-top: 0px; width: 14px; min-width: 14px; height: 14px; min-height: 14px; font-size: 10px; border-color: black !important; }
+            .tango-link { text-decoration: none; color: black !important; font-weight: bold; }
         }
     </style>
 </head>
@@ -299,8 +348,11 @@
 
 <div class="container">
     <div class="top-bar no-print">
-        <button type="button" id="btn-mode-toggle" class="btn-accent btn-top" onclick="toggleMode()">MODO TÉCNICO</button>
-        <button class="btn-top" onclick="window.print()" style="background-color: var(--text-main); color:white;">🖨️ IMPRIMIR HOJA</button>
+        <div style="display: flex; gap: 10px;">
+            <button type="button" id="btn-mode-toggle" class="btn-accent btn-top" onclick="toggleMode()">MODO TÉCNICO</button>
+            <button class="btn-top" onclick="window.print()" style="background-color: var(--comment); color:white; border:none;">🖨️ IMPRIMIR</button>
+        </div>
+        <button class="btn-icon-small" onclick="toggleTheme()" title="Alternar Modo Oscuro/Claro">🌓</button>
     </div>
 
     <div class="view-controls no-print">
@@ -351,7 +403,14 @@
 
     <div id="print-area">
         <div class="document-header-container">
-            <img src="latam-airlines-logo.svg" alt="LATAM Airlines" class="latam-logo-header">
+            <svg class="latam-logo-header" viewBox="0.13 -0.275 234.736 70.807" xmlns="http://www.w3.org/2000/svg" width="2500" height="757">
+                <g fill="none" fill-rule="evenodd">
+                    <path d="M228.193 54.161c-4.395 0-7.267 1.82-7.267 4.63 0 2.646 2.196 3.639 5.745 4.3l1.69.33c2.535.496 3.886 1.323 3.886 2.646 0 1.322-1.35 2.316-4.731 2.316-3.041 0-5.408-.994-6.084-1.49l-.677 2.316c.677.33 3.043 1.323 6.591 1.323 4.734 0 7.438-1.82 7.438-4.63 0-2.645-2.367-3.968-6.085-4.63l-1.69-.331c-2.704-.496-3.549-.992-3.549-2.315 0-1.322 1.522-2.314 4.562-2.314 2.536 0 4.395.495 5.24.826l.509-1.984c-1.015-.33-2.875-.993-5.578-.993zM75.596 70.366h2.533l-7.604-15.212c-.337-.497-.676-.662-1.182-.662h-1.859l-7.942 15.874h2.534l2.029-4.133h9.462l2.03 4.133zm31.261 0v-5.787c1.184.66 2.874.992 4.734.992 1.013 0 1.69 0 2.533-.165l3.38 4.96h2.704l-3.718-5.622c2.368-.992 3.887-2.976 3.887-5.291 0-2.976-2.534-5.126-7.097-5.126h-8.956v16.039zm62.866 0V57.304l11.152 12.4c.338.497.845.662 1.52.662h1.523V54.492h-2.367V67.06l-10.985-11.905c-.337-.497-.673-.662-1.519-.662h-1.691v15.874h2.367zm-97.17-6.283h-7.434l3.717-7.44zm39.206-.662c-1.86 0-3.718-.495-4.902-1.157v-5.952h6.592c3.212 0 4.394 1.653 4.394 3.14 0 2.15-1.692 3.97-6.084 3.97zm19.433 6.945h11.83v-2.15h-9.295V54.492h-2.535zm-41.91 0h2.537V54.492h-2.536v15.874zm107.309-15.874v15.874h13.013V68.05h-10.477v-4.96h9.123v-2.15h-9.123v-4.299h10.138v-2.15h-12.674zm-44.275 15.874h2.537V54.492h-2.537zM114.97 37.164h7.874L110.58 13.522c-.643-1.164-1.279-1.608-2.747-1.608h-6.77l-12.905 25.25h7.866l2.29-4.655h14.46l2.195 4.655zm64.528 0h7.778l-12.268-23.642c-.636-1.164-1.276-1.608-2.739-1.608h-6.773l-12.906 25.25h7.871l2.287-4.655h14.462zm27.728-6.177c.279.895 1.375 1.522 2.565 1.522h7.414l5.491-14.86 5.215 19.515h6.955l-5.764-22.383c-.543-2.239-1.829-2.867-3.933-2.867h-7.232l-5.214 14.777-4.122-12.543c-.545-1.606-1.557-2.234-3.203-2.234h-8.143l-6.684 25.25h7.052l5.118-19.515zm-32.574-3.584h-9.615l4.856-10.117zm-64.44 0h-9.608l4.854-10.117 4.755 10.117zm-27.545 9.761l2.927-5.822h-17.3V11.914h-7.412v25.25zm51.437 0h7.133v-19.43l12.453-.806v-5.014h-32.036v5.014l12.45.805zM10.655 62.807l6.316-2.249c1.316-.468 1.316.568 1.316 2.113v2.844c0 2.3-.79 2.58-1.842 2.955l-5.79 2.062zm0-12.616l16.053-5.717c1.315-.468 1.315.567 1.315 2.112v2.832c0 2.312-.79 2.593-1.842 2.968l-15.526 5.53V50.19M9.34 32.214l-8.158-2.905C.13 28.934.13 27.533.13 27.019c0 0 0 1.688 1.578 1.126L41.707 13.9c3.158-1.125 3.158-1.992 1.842-2.46 1.316.468 1.316.468 1.316 4.25 0 3.604 0 4.81-1.579 5.372L11.971 32.214c-1.316.469-1.316.469-2.631 0" style="fill: var(--logo-primary)"/>
+                    <path d="M3.55 17.536l13.974 4.976 10.845-3.862L2.235 9.343C.393 8.687.13 8.593.13 9.881v3.347c0 3.09 2.368 3.933 3.42 4.308m40 6.52l-4.336-1.544-10.845 3.862 6.868 2.446 6.47-2.304c3.158-1.124 3.158-1.991 1.842-2.46" style="fill: var(--logo-accent)"/>
+                    <path d="M43.55 24.056c1.315.469 1.315 1.336-1.843 2.46L10.655 37.575v7.724l32.631-11.62c1.579-.563 1.579-1.769 1.579-5.374 0-3.78 0-3.78-1.316-4.249" style="fill: var(--logo-primary)"/>
+                    <path d="M43.55 11.44L12.76.475c-1.841-.656-2.105-.75-2.105.538V4.36c0 3.09 2.368 3.933 3.42 4.308l21.162 7.536 6.47-2.304c3.158-1.125 3.158-1.992 1.842-2.46M1.708 28.145l8.948-3.187-8.421-2.999C.393 21.303.13 21.21.13 22.497v4.521s0 1.689 1.578 1.127" style="fill: var(--logo-accent)"/>
+                </g>
+            </svg>
             <div class="document-header-text" id="display-header">CARGANDO DATOS...</div>
         </div>
 
@@ -370,7 +429,7 @@
         <div id="confirm-message" style="margin-bottom: 20px; font-size: 12px; font-weight: bold; color: var(--text-main);">¿ESTÁS SEGURO?</div>
         <div class="modal-footer" style="border:none; padding-top:0;">
             <button class="btn-outline btn-modal-action" onclick="closeConfirmModal()">CANCELAR</button>
-            <button class="btn-leader btn-modal-action" id="confirm-yes-btn">CONFIRMAR</button>
+            <button class="btn-leader btn-modal-action" id="confirm-yes-btn" style="background-color: var(--leader-color);">CONFIRMAR</button>
         </div>
     </div>
 </div>
@@ -381,7 +440,7 @@
         <input type="text" id="prompt-input" autocomplete="off" placeholder="Escribe aquí... (Dejar en blanco para borrar)">
         <div class="modal-footer">
             <button class="btn-outline btn-modal-action" onclick="closePromptModal()">CANCELAR</button>
-            <button class="btn-leader btn-modal-action" id="prompt-save-btn">GUARDAR NOTA</button>
+            <button class="btn-leader btn-modal-action" id="prompt-save-btn" style="background-color: var(--primary);">GUARDAR NOTA</button>
         </div>
     </div>
 </div>
@@ -525,6 +584,31 @@
     let editCurrentTaskId = null;
     const MAINTENIX_URL = "https://maintenix.lan.com/maintenix/common/ToDoList.jsp";
     const SESSION_EXPIRATION_MS = 12 * 60 * 60 * 1000;
+
+    // --- MANEJO DE TEMA (OSCURO/CLARO) DE ALTA EFICIENCIA ---
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    }
+
+    function toggleTheme() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+    
+    initTheme(); // Inicializar inmediatamente al cargar el script
 
     // ESTADOS LOCALES DE VISTA Y FILTRO
     let currentViewMode = localStorage.getItem('viewMode') || 'default';
@@ -1137,7 +1221,7 @@
         openEditAvionModal, saveEditAvion, confirmDeleteAvion,
         openAddTaskModal, saveAddTask, openEditTaskModal, saveEditTask, confirmDeleteTask,
         editAvionComment, editTaskComment, closeConfirmModal, closePromptModal,
-        changeViewMode, applyLocalFilter, resetLocalFilter, handleTaskDescInput
+        changeViewMode, applyLocalFilter, resetLocalFilter, handleTaskDescInput, toggleTheme
     });
 
 </script>
