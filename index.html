@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programación Diaria - LATAM (Maintenix Theme)</title>
+    <title>Programación Diaria - LATAM (Maintenix Edition)</title>
     <style>
         :root {
-            /* Colores inspirados en IFS Maintenix + LATAM */
+            /* Colores Corporativos y Sistema IFS */
             --ifs-blue: #005da4;
             --ifs-light-blue: #eef4f9;
             --ifs-bg: #f5f5f5;
@@ -18,11 +18,12 @@
             --leader-color: #005da4;
             --danger: #d93838;
             --help: #e67e22; 
+            --success: #10b981;
             --comment: #555555;
         }
 
         body, input, select, button, textarea {
-            font-family: Arial, Helvetica, sans-serif; /* Tipografía clásica enterprise */
+            font-family: Arial, Helvetica, sans-serif;
             text-transform: uppercase;
             font-size: 11px;
             color: var(--ifs-text);
@@ -34,152 +35,166 @@
             padding: 10px;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; background: white; border: 1px solid var(--ifs-border); }
+        .container { max-width: 1250px; margin: 0 auto; background: white; border: 1px solid var(--ifs-border); box-shadow: 0 0 10px rgba(0,0,0,0.05); }
 
-        /* HEADER ESTILO IFS */
+        /* HEADER ESTILO SISTEMA */
         .ifs-app-header {
             display: flex; justify-content: space-between; align-items: flex-end;
-            border-bottom: 2px solid var(--ifs-blue); padding: 10px 15px; background: white;
+            border-bottom: 3px solid var(--ifs-blue); padding: 12px 20px; background: white;
         }
 
-        .logo-container svg { width: 120px; height: auto; }
+        .logo-container svg { width: 130px; height: auto; }
         
-        .sys-info { text-align: right; font-size: 10px; color: var(--comment); }
-        .sys-info strong { color: var(--ifs-text); }
+        .sys-info { text-align: right; font-size: 10px; color: var(--comment); line-height: 1.4; }
+        .sys-info strong { color: var(--ifs-text); font-size: 11px; }
+        .clock-zulu { font-weight: bold; color: var(--ifs-blue); }
         
-        .document-header { font-size: 16px; font-weight: bold; color: var(--ifs-blue); margin: 0; padding-top: 10px; }
+        .document-header { font-size: 17px; font-weight: bold; color: var(--ifs-blue); margin: 0; padding-top: 12px; letter-spacing: 0.5px; }
 
-        /* Barra de herramientas / Botonera superior */
+        /* BARRA DE HERRAMIENTAS */
         .toolbar {
             background-color: var(--ifs-panel); border-bottom: 1px solid var(--ifs-border);
-            padding: 6px 15px; display: flex; gap: 8px; align-items: center; justify-content: space-between;
+            padding: 8px 20px; display: flex; gap: 10px; align-items: center; justify-content: space-between;
         }
 
-        .toolbar-group { display: flex; gap: 6px; align-items: center; }
+        .toolbar-group { display: flex; gap: 8px; align-items: center; }
 
         .btn-ifs {
             background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
             border: 1px solid #999; border-radius: 3px; color: #333;
-            padding: 4px 10px; font-size: 10px; cursor: pointer; text-align: center;
+            padding: 5px 12px; font-size: 10px; cursor: pointer; text-align: center; font-weight: bold;
+            transition: all 0.1s;
         }
-        .btn-ifs:hover { background: linear-gradient(to bottom, #e5e5e5 0%, #cccccc 100%); }
-        .btn-ifs:active { background: #d4d4d4; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
+        .btn-ifs:hover { background: linear-gradient(to bottom, #e5e5e5 0%, #cccccc 100%); border-color: #777; }
+        .btn-ifs:active { background: #d4d4d4; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
         
-        .btn-ifs-primary { border-color: var(--ifs-blue); color: var(--ifs-blue); font-weight: bold; }
-        .btn-ifs-danger { color: var(--danger); }
+        .btn-ifs-primary { border-color: var(--ifs-blue); color: var(--ifs-blue); }
+        .btn-ifs-danger { border-color: var(--danger); color: var(--danger); }
+        .btn-print { background: linear-gradient(to bottom, #718096 0%, #4a5568 100%); color: white; border-color: #2d3748; }
+        .btn-print:hover { background: #4a5568; color: white; }
 
         .leader-wrapper { display: contents; } 
         body:not(.team-leader-mode) .leader-only { display: none !important; }
 
-        /* Controles de vista y filtros locales */
+        /* FILTROS LOCALES */
         .filter-bar {
-            background: var(--ifs-light-blue); padding: 8px 15px; border-bottom: 1px solid var(--ifs-border);
-            display: flex; gap: 15px; align-items: center; font-weight: bold;
+            background: var(--ifs-light-blue); padding: 10px 20px; border-bottom: 1px solid var(--ifs-border);
+            display: flex; gap: 20px; align-items: center; font-weight: bold; font-size: 10px;
         }
 
         input, select {
-            padding: 3px 5px; border: 1px solid #999;
+            padding: 4px 6px; border: 1px solid #999; border-radius: 2px;
             font-size: 11px; outline: none; background: white;
         }
-        input:focus, select:focus { border-color: var(--ifs-blue); }
+        input:focus, select:focus { border-color: var(--ifs-blue); box-shadow: 0 0 2px var(--ifs-blue); }
 
-        /* PANEL DE CONTROL TEAM LEADER */
+        /* PANEL TEAM LEADER */
         .leader-panel {
-            background-color: #ffffe0; border-bottom: 1px solid var(--ifs-border);
-            padding: 10px 15px; display: flex; flex-direction: column; gap: 8px;
+            background-color: #fffae6; border-bottom: 1px solid var(--ifs-border); border-left: 4px solid #d69e2e;
+            padding: 12px 20px; display: flex; flex-direction: column; gap: 10px;
         }
 
         .leader-title { font-weight: bold; color: #b8860b; font-size: 12px; }
-        .control-group { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .control-group { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 
-        /* Etiquetas de técnicos (Simplificadas) */
-        #tech-pills-container { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+        #tech-pills-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
         .tech-pill {
-            background-color: white; border: 1px solid var(--ifs-border);
-            padding: 2px 6px; font-size: 10px; display: inline-flex; align-items: center; gap: 4px;
+            background-color: white; border: 1px solid #b8860b; border-radius: 2px;
+            padding: 3px 8px; font-size: 10px; display: inline-flex; align-items: center; gap: 6px; font-weight: bold;
         }
-        .tech-pill span.tech-remove { cursor: pointer; color: var(--danger); font-weight: bold; }
+        .tech-pill span.tech-remove { cursor: pointer; color: var(--danger); font-size: 12px; line-height: 1; }
 
-        /* =========================================
-           TABLAS ESTILO MAINTENIX (El Core Visual)
-           ========================================= */
-        .wp-panel { margin: 15px; border: 1px solid var(--ifs-border); background: white; }
+        /* TABLAS PRINCIPALES (Work Packages) */
+        .wp-panel { margin: 20px; border: 1px solid var(--ifs-border); background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 
         .wp-header {
-            background-color: var(--ifs-light-blue); padding: 6px 10px;
+            background-color: var(--ifs-light-blue); padding: 8px 12px;
             border-bottom: 1px solid var(--ifs-border); display: flex; justify-content: space-between; align-items: center;
         }
-        .wp-header.activity-header { background-color: #fce4ec; border-bottom-color: #f48fb1; }
+        .wp-header.activity-header { background-color: #fce4ec; border-bottom-color: #f48fb1; border-left: 4px solid var(--latam-red); }
+        .wp-header:not(.activity-header) { border-left: 4px solid var(--ifs-blue); }
 
-        .wp-title { font-weight: bold; color: var(--ifs-blue); font-size: 12px; }
-        .wp-details { color: var(--comment); font-size: 10px; margin-left: 15px; }
-        .wp-comment { color: var(--danger); font-size: 10px; margin-top: 4px; font-weight: bold;}
+        .wp-title { font-weight: bold; color: var(--ifs-blue); font-size: 13px; }
+        .wp-details { color: var(--comment); font-size: 11px; margin-left: 15px; background: white; padding: 2px 6px; border: 1px solid #ccc; border-radius: 2px; }
+        .wp-comment { color: var(--danger); font-size: 10px; margin-top: 6px; font-weight: bold; }
 
-        /* La tabla real de tareas */
+        .table-responsive { overflow-x: auto; }
+        
         .ifs-table { width: 100%; border-collapse: collapse; text-align: left; }
         
         .ifs-table th {
             background-color: var(--ifs-blue); color: white;
-            padding: 4px 6px; font-size: 10px; font-weight: bold;
-            border-right: 1px solid white;
+            padding: 6px 8px; font-size: 10px; font-weight: bold;
+            border-right: 1px solid rgba(255,255,255,0.2); border-bottom: 2px solid #003d73;
         }
         .ifs-table th:last-child { border-right: none; }
 
         .ifs-table td {
-            padding: 5px 6px; border-bottom: 1px solid #e0e0e0;
-            border-right: 1px solid #e0e0e0; font-size: 10px; vertical-align: middle;
+            padding: 6px 8px; border-bottom: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0; font-size: 11px; vertical-align: middle;
         }
         .ifs-table td:last-child { border-right: none; }
         
-        .ifs-table tbody tr:nth-child(even) { background-color: #f9f9f9; }
+        .ifs-table tbody tr { transition: background-color 0.1s; }
+        .ifs-table tbody tr:nth-child(even) { background-color: #fcfcfc; }
         .ifs-table tbody tr:hover { background-color: #fffde7; }
 
         /* Estados de fila */
-        .row-priority { border-left: 3px solid var(--latam-red); }
-        .row-help { border-left: 3px solid var(--help); }
-        .row-completed { background-color: #f0f0f0 !important; color: #888; }
-        .row-completed td { text-decoration: line-through; }
+        .row-priority { border-left: 4px solid var(--latam-red); background-color: #fff5f7 !important; }
+        .row-help { border-left: 4px solid var(--help); background-color: #fffaf0 !important; }
+        .row-completed { background-color: #f0f0f0 !important; color: #999; border-left: 4px solid var(--success); }
+        .row-completed td { text-decoration: line-through; opacity: 0.7; }
+        .row-completed td:first-child { text-decoration: none; opacity: 1; } /* Checkbox intacto */
 
-        .tango-link { color: var(--ifs-link); text-decoration: underline; cursor: pointer; }
+        .tango-link { color: var(--ifs-link); text-decoration: underline; cursor: pointer; font-weight: bold; }
         .row-completed .tango-link { color: #888; text-decoration: line-through; }
 
-        /* Botones de acción en la tabla */
+        /* Controles en la tabla */
         .action-cell { display: flex; gap: 4px; flex-wrap: wrap; }
+        .status-checkbox { margin: 0; cursor: pointer; width: 16px; height: 16px; accent-color: var(--success); }
         
-        .status-checkbox { margin: 0; cursor: pointer; width: 13px; height: 13px; }
+        .badge { padding: 2px 6px; border-radius: 2px; font-size: 9px; font-weight: bold; color: white; }
+        .badge-urg { background-color: var(--latam-red); }
+        .badge-sup { background-color: var(--help); }
+        .badge-ok { background-color: var(--success); }
 
-        /* MODALS (Ventanas estilo sistema) */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
+        /* MODALS */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
         
         .modal-content {
-            background-color: var(--ifs-bg); margin: 8% auto; padding: 0;
-            border: 1px solid #777; width: 90%; max-width: 450px; box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            background-color: var(--ifs-bg); margin: 5% auto; padding: 0;
+            border: 1px solid #555; width: 90%; max-width: 480px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         
         .modal-header { 
-            background: var(--ifs-blue); color: white; padding: 6px 10px; 
-            font-size: 12px; font-weight: bold; border-bottom: 1px solid #555;
+            background: var(--ifs-blue); color: white; padding: 10px 15px; 
+            font-size: 13px; font-weight: bold; border-bottom: 2px solid #003d73;
         }
-        .modal-body { padding: 15px; background: white; }
-        .modal-body input { width: 100%; margin-bottom: 10px; box-sizing: border-box; }
-        .modal-row { display: flex; gap: 10px; }
+        .modal-body { padding: 20px; background: white; }
+        .modal-body label { font-size: 10px; font-weight: bold; color: var(--ifs-blue); margin-bottom: 4px; display: block; }
+        .modal-body input { width: 100%; margin-bottom: 12px; box-sizing: border-box; padding: 6px; }
+        .modal-row { display: flex; gap: 15px; }
         .modal-row > * { flex: 1; }
 
-        .tech-grid { display: flex; flex-wrap: wrap; gap: 6px; max-height: 150px; overflow-y: auto; margin-bottom: 10px; border: 1px solid var(--ifs-border); padding: 5px; background: #f9f9f9; }
-        .tech-checkbox-label { display: flex; align-items: center; gap: 4px; font-size: 10px; cursor: pointer; width: 45%; }
+        .tech-grid { display: flex; flex-wrap: wrap; gap: 8px; max-height: 160px; overflow-y: auto; margin-bottom: 12px; border: 1px solid var(--ifs-border); padding: 8px; background: #f9f9f9; }
+        .tech-checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; width: 45%; color: var(--ifs-text); }
+        .tech-checkbox-label input { accent-color: var(--ifs-blue); width: 14px; height: 14px; }
         
-        .modal-footer { padding: 10px; background: var(--ifs-panel); border-top: 1px solid var(--ifs-border); text-align: right; }
+        .modal-footer { padding: 12px 20px; background: var(--ifs-panel); border-top: 1px solid var(--ifs-border); text-align: right; display: flex; justify-content: flex-end; gap: 8px; }
+        .modal-footer.space-between { justify-content: space-between; }
 
         @media print {
             @page { size: landscape; margin: 1cm; }
             .no-print { display: none !important; }
             body { padding: 0; background: white; }
-            .container { border: none; max-width: 100%; margin: 0; }
-            .ifs-table th { background-color: #d0d0d0 !important; color: black !important; border: 1px solid #999; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .ifs-table td { border: 1px solid #999; }
-            .wp-panel { border: none; margin: 0 0 15px 0; page-break-inside: avoid; }
-            .wp-header { border: 1px solid #999; background-color: #f0f0f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .row-completed td { color: #555; }
+            .container { border: none; box-shadow: none; max-width: 100%; margin: 0; }
+            .ifs-app-header { border-bottom: 2px solid black; padding: 0 0 10px 0; margin-bottom: 15px; }
+            .wp-panel { border: none; margin: 0 0 20px 0; page-break-inside: avoid; box-shadow: none; }
+            .wp-header { border: 1px solid black; background-color: #f0f0f0 !important; border-left: 4px solid black; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .ifs-table th { background-color: #e0e0e0 !important; color: black !important; border: 1px solid black; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .ifs-table td { border: 1px solid #ccc; color: black; }
+            .row-completed td { color: #555; text-decoration: line-through; }
+            .badge { border: 1px solid black; color: black; background: transparent !important; }
         }
     </style>
 </head>
@@ -196,175 +211,176 @@
                     <path d="M43.55 11.44L12.76.475c-1.841-.656-2.105-.75-2.105.538V4.36c0 3.09 2.368 3.933 3.42 4.308l21.162 7.536 6.47-2.304c3.158-1.125 3.158-1.992 1.842-2.46M1.708 28.145l8.948-3.187-8.421-2.999C.393 21.303.13 21.21.13 22.497v4.521s0 1.689 1.578 1.127" fill="#ed1650"/>
                 </g>
             </svg>
-            <h1 class="document-header">Maintenance Work Schedule</h1>
+            <h1 class="document-header">PROGRAMACIÓN DIARIA DE MANTENIMIENTO</h1>
         </div>
         <div class="sys-info no-print">
-            System Loaded: <span id="sys-time"></span> UTC<br>
-            Current Display: <strong id="display-header">LOADING DATA...</strong>
+            <span class="clock-zulu" id="sys-time-zulu"></span><br>
+            Hora Local: <span id="sys-time-local"></span><br>
+            Vista Actual: <strong id="display-header">CARGANDO DATOS...</strong>
         </div>
     </div>
 
     <div class="toolbar no-print">
         <div class="toolbar-group">
-            <button type="button" id="btn-mode-toggle" class="btn-ifs btn-ifs-primary" onclick="toggleMode()">Enable Team Leader Mode</button>
+            <button type="button" id="btn-mode-toggle" class="btn-ifs btn-ifs-primary" onclick="toggleMode()">MODO TÉCNICO (CLICK PARA TL)</button>
             <div class="leader-only leader-wrapper">
-                <button class="btn-ifs" onclick="openAddAvionModal()">+ Add Work Package (Aircraft)</button>
-                <button class="btn-ifs" onclick="openAddActivityModal()">+ Add Non-Routine Activity</button>
+                <button class="btn-ifs" onclick="openAddAvionModal()">+ Añadir Aeronave (Work Package)</button>
+                <button class="btn-ifs" onclick="openAddActivityModal()">+ Añadir Actividad No Rutinaria</button>
             </div>
         </div>
         <div class="toolbar-group">
-            <button class="btn-ifs" onclick="window.print()">Print Tally Sheet</button>
+            <button class="btn-ifs btn-print" onclick="window.print()">🖨️ Imprimir Hoja de Turno</button>
         </div>
     </div>
 
     <div class="filter-bar no-print">
-        <label>View Mode:</label>
+        <label>MODO DE VISTA:</label>
         <select id="view-mode-select" onchange="changeViewMode()">
-            <option value="default">By Aircraft / Work Package (Default)</option>
-            <option value="time">By Scheduled Start Time</option>
-            <option value="tech">Group By Technician</option>
+            <option value="default">Por Aeronave / WP (Por Defecto)</option>
+            <option value="time">Por Hora de Inicio Programada</option>
+            <option value="tech">Agrupar por Técnico Asignado</option>
         </select>
         
-        <label style="margin-left: 15px;">Filter Tech:</label>
+        <label style="margin-left: 20px;">FILTRAR TÉCNICO:</label>
         <select id="local-tech-filter" onchange="applyLocalFilter()">
-            <option value="">-- Show All --</option>
+            <option value="">-- Mostrar Todos --</option>
         </select>
-        <button class="btn-ifs" onclick="resetLocalFilter()">Clear Filter</button>
+        <button class="btn-ifs" onclick="resetLocalFilter()">Limpiar Filtro</button>
     </div>
 
     <div class="leader-panel leader-only no-print">
-        <div class="leader-title">Workscope Administration (Leader)</div>
+        <div class="leader-title">PANEL DE ADMINISTRACIÓN (TEAM LEADER)</div>
         <div class="control-group">
-            <label>Shift:</label>
+            <label style="font-weight:bold;">TURNO:</label>
             <select id="in-turno" onchange="updateHeader()">
                 <option value="Turno Día">DÍA</option>
                 <option value="Turno Tarde">TARDE</option>
                 <option value="Turno Noche">NOCHE</option>
             </select>
-            <label>Date:</label>
+            <label style="font-weight:bold;">FECHA:</label>
             <input type="date" id="in-fecha" onchange="updateHeader()">
-            <label>Leader / Manager:</label>
-            <input type="text" id="in-jefe" placeholder="Name" oninput="updateHeader()">
-            <button class="btn-ifs btn-ifs-danger" style="margin-left:auto;" onclick="clearAllData()">Reset Work Packages</button>
+            <label style="font-weight:bold;">TEAM LEADER:</label>
+            <input type="text" id="in-jefe" placeholder="Nombre Apellido" oninput="updateHeader()">
+            <button class="btn-ifs btn-ifs-danger" style="margin-left:auto;" onclick="clearAllData()">⚠️ Borrar Toda la Programación</button>
         </div>
         
         <div class="control-group" style="margin-top: 5px;">
-            <label>Tech Pool:</label>
-            <input type="text" id="in-new-tech" placeholder="Technician Name" onkeypress="if(event.key === 'Enter') addTech()">
-            <button class="btn-ifs" onclick="addTech()">Add Tech</button>
+            <label style="font-weight:bold;">AÑADIR TÉCNICO AL TURNO:</label>
+            <input type="text" id="in-new-tech" placeholder="Nombre del Técnico" onkeypress="if(event.key === 'Enter') addTech()" style="width: 200px;">
+            <button class="btn-ifs btn-ifs-primary" onclick="addTech()">Añadir Técnico</button>
         </div>
         <div id="tech-pills-container"></div>
     </div>
 
     <div id="print-area">
-        <div id="aviones-container" style="padding-top: 15px;"></div>
+        <div id="aviones-container" style="padding-top: 10px;"></div>
     </div>
 </div>
 
 <div id="confirm-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">System Confirmation</div>
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">Confirmación del Sistema</div>
         <div class="modal-body">
-            <p id="confirm-message" style="margin-top: 0;">Are you sure?</p>
+            <p id="confirm-message" style="margin-top: 0; font-size: 12px; font-weight: bold;"></p>
         </div>
         <div class="modal-footer">
-            <button class="btn-ifs" id="confirm-yes-btn" style="font-weight:bold;">Yes</button>
-            <button class="btn-ifs" onclick="closeConfirmModal()">No</button>
+            <button class="btn-ifs btn-ifs-danger" id="confirm-yes-btn">Sí, Confirmar</button>
+            <button class="btn-ifs" onclick="closeConfirmModal()">Cancelar</button>
         </div>
     </div>
 </div>
 
 <div id="prompt-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header" id="prompt-title">Input Details</div>
+    <div class="modal-content" style="max-width: 450px;">
+        <div class="modal-header" id="prompt-title">Ingresar Información</div>
         <div class="modal-body">
-            <input type="text" id="prompt-input" autocomplete="off">
+            <input type="text" id="prompt-input" autocomplete="off" placeholder="Escriba aquí...">
         </div>
         <div class="modal-footer">
-            <button class="btn-ifs btn-ifs-primary" id="prompt-save-btn">Save</button>
-            <button class="btn-ifs" onclick="closePromptModal()">Cancel</button>
+            <button class="btn-ifs btn-ifs-primary" id="prompt-save-btn">Guardar</button>
+            <button class="btn-ifs" onclick="closePromptModal()">Cancelar</button>
         </div>
     </div>
 </div>
 
 <div id="add-avion-modal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">Add Work Package (Aircraft)</div>
+        <div class="modal-header">Añadir Paquete de Trabajo (Aeronave)</div>
         <div class="modal-body">
-            <label>Aircraft Registration:</label>
-            <input type="text" id="add-ac-reg" placeholder="CC-BGM" maxlength="6" oninput="formatMatricula(this)">
+            <label>Matrícula de Aeronave:</label>
+            <input type="text" id="add-ac-reg" placeholder="Ej: CC-BGM" maxlength="6" oninput="formatMatricula(this)">
             <div class="modal-row">
                 <div>
-                    <label>WP Reference (T00...):</label>
-                    <input type="text" id="add-ac-wp" maxlength="8">
+                    <label>Referencia WP (Opcional):</label>
+                    <input type="text" id="add-ac-wp" placeholder="T00..." maxlength="8">
                 </div>
                 <div>
-                    <label>Location / Pos:</label>
+                    <label>Posición / Ubicación:</label>
                     <input type="text" id="add-ac-pos">
                 </div>
             </div>
             <div class="modal-row">
                 <div>
-                    <label>Est. Start Time:</label>
+                    <label>Hora de Inicio Est.:</label>
                     <input type="time" id="add-ac-start">
                 </div>
                 <div>
-                    <label>Est. End Time:</label>
+                    <label>Hora de Término Est.:</label>
                     <input type="time" id="add-ac-end">
                 </div>
             </div>
-            <label>Remarks / Fault Ref:</label>
+            <label>Observaciones / Reporte (Defect):</label>
             <input type="text" id="add-ac-comment">
         </div>
         <div class="modal-footer">
-            <button class="btn-ifs btn-ifs-primary" onclick="saveAddAvion()">Save</button>
-            <button class="btn-ifs" onclick="closeModal('add-avion-modal')">Cancel</button>
+            <button class="btn-ifs btn-ifs-primary" onclick="saveAddAvion()">Guardar Aeronave</button>
+            <button class="btn-ifs" onclick="closeModal('add-avion-modal')">Cancelar</button>
         </div>
     </div>
 </div>
 
 <div id="add-activity-modal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">Add Non-Routine Activity</div>
+        <div class="modal-header" style="background: var(--latam-red);">Añadir Actividad No Rutinaria</div>
         <div class="modal-body">
-            <label>Activity Description:</label>
-            <input type="text" id="add-act-title">
+            <label>Descripción de la Actividad:</label>
+            <input type="text" id="add-act-title" placeholder="Ej: Capacitación, Orden de Aseo, Briefing">
             <div class="modal-row">
-                <div><label>Start Time:</label><input type="time" id="add-act-start"></div>
-                <div><label>End Time:</label><input type="time" id="add-act-end"></div>
+                <div><label>Hora de Inicio:</label><input type="time" id="add-act-start"></div>
+                <div><label>Hora de Término:</label><input type="time" id="add-act-end"></div>
             </div>
-            <label>Assign Labor:</label>
+            <label>Asignar Personal:</label>
             <div class="tech-grid" id="add-act-techs"></div>
         </div>
         <div class="modal-footer">
-            <button class="btn-ifs btn-ifs-primary" onclick="saveAddActivity()">Save</button>
-            <button class="btn-ifs" onclick="closeModal('add-activity-modal')">Cancel</button>
+            <button class="btn-ifs btn-ifs-primary" onclick="saveAddActivity()">Guardar Actividad</button>
+            <button class="btn-ifs" onclick="closeModal('add-activity-modal')">Cancelar</button>
         </div>
     </div>
 </div>
 
 <div id="edit-avion-modal" class="modal">
     <div class="modal-content">
-        <div class="modal-header" id="edit-avion-header">Edit Work Package Details</div>
+        <div class="modal-header" id="edit-avion-header">Editar Detalles del Paquete de Trabajo</div>
         <div class="modal-body">
-            <label>Registration:</label>
+            <label>Matrícula:</label>
             <input type="text" id="edit-ac-reg" maxlength="6" oninput="formatMatricula(this)">
             <div class="modal-row">
-                <div><label>WP Reference:</label><input type="text" id="edit-ac-wp" maxlength="8"></div>
-                <div><label>Location / Pos:</label><input type="text" id="edit-ac-pos"></div>
+                <div><label>Referencia WP:</label><input type="text" id="edit-ac-wp" maxlength="8"></div>
+                <div><label>Posición / Ubicación:</label><input type="text" id="edit-ac-pos"></div>
             </div>
             <div class="modal-row">
-                <div><label>Start:</label><input type="time" id="edit-ac-start"></div>
-                <div><label>End:</label><input type="time" id="edit-ac-end"></div>
+                <div><label>Inicio:</label><input type="time" id="edit-ac-start"></div>
+                <div><label>Término:</label><input type="time" id="edit-ac-end"></div>
             </div>
-            <label>Remarks:</label>
+            <label>Observaciones:</label>
             <input type="text" id="edit-ac-comment">
         </div>
-        <div class="modal-footer" style="display:flex; justify-content:space-between;">
-            <button class="btn-ifs btn-ifs-danger" onclick="confirmDeleteAvion()">Delete WP</button>
+        <div class="modal-footer space-between">
+            <button class="btn-ifs btn-ifs-danger" onclick="confirmDeleteAvion()">Eliminar WP Completo</button>
             <div>
-                <button class="btn-ifs btn-ifs-primary" onclick="saveEditAvion()">Save</button>
-                <button class="btn-ifs" onclick="closeModal('edit-avion-modal')">Cancel</button>
+                <button class="btn-ifs btn-ifs-primary" onclick="saveEditAvion()">Guardar Cambios</button>
+                <button class="btn-ifs" onclick="closeModal('edit-avion-modal')">Cancelar</button>
             </div>
         </div>
     </div>
@@ -372,38 +388,38 @@
 
 <div id="add-task-modal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">Add Task to Work Package</div>
+        <div class="modal-header">Añadir Tarjeta de Trabajo (Task)</div>
         <div class="modal-body">
-            <label>Task Description / Name:</label>
+            <label>Descripción de la Tarea:</label>
             <input type="text" id="add-task-desc" oninput="handleTaskDescInput(this, 'add-task-tango')">
-            <label>Task ID (Tango):</label>
-            <input type="text" id="add-task-tango" maxlength="8" oninput="autoFormatTango(this)">
-            <label>Assign Labor:</label>
+            <label>Número de Tarjeta (Tango / ID):</label>
+            <input type="text" id="add-task-tango" maxlength="8" placeholder="T00..." oninput="autoFormatTango(this)">
+            <label>Asignar Personal:</label>
             <div class="tech-grid" id="add-task-techs"></div>
         </div>
         <div class="modal-footer">
-            <button class="btn-ifs btn-ifs-primary" onclick="saveAddTask()">Save Task</button>
-            <button class="btn-ifs" onclick="closeModal('add-task-modal')">Cancel</button>
+            <button class="btn-ifs btn-ifs-primary" onclick="saveAddTask()">Guardar Tarea</button>
+            <button class="btn-ifs" onclick="closeModal('add-task-modal')">Cancelar</button>
         </div>
     </div>
 </div>
 
 <div id="edit-task-modal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">Edit Task Details</div>
+        <div class="modal-header">Editar Tarjeta de Trabajo</div>
         <div class="modal-body">
-            <label>Task Description:</label>
+            <label>Descripción de la Tarea:</label>
             <input type="text" id="edit-task-desc" oninput="handleTaskDescInput(this, 'edit-task-tango')">
-            <label>Task ID (Tango):</label>
+            <label>Número de Tarjeta (Tango / ID):</label>
             <input type="text" id="edit-task-tango" maxlength="8" oninput="autoFormatTango(this)">
-            <label>Assigned Labor:</label>
+            <label>Personal Asignado:</label>
             <div class="tech-grid" id="edit-task-techs"></div>
         </div>
-        <div class="modal-footer" style="display:flex; justify-content:space-between;">
-            <button class="btn-ifs btn-ifs-danger" onclick="confirmDeleteTask()">Delete Task</button>
+        <div class="modal-footer space-between">
+            <button class="btn-ifs btn-ifs-danger" onclick="confirmDeleteTask()">Eliminar Tarea</button>
             <div>
-                <button class="btn-ifs btn-ifs-primary" onclick="saveEditTask()">Save</button>
-                <button class="btn-ifs" onclick="closeModal('edit-task-modal')">Cancel</button>
+                <button class="btn-ifs btn-ifs-primary" onclick="saveEditTask()">Guardar Cambios</button>
+                <button class="btn-ifs" onclick="closeModal('edit-task-modal')">Cancelar</button>
             </div>
         </div>
     </div>
@@ -414,11 +430,17 @@
     import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
-    // RELOJ UTC
-    setInterval(() => {
+    // RELOJES DEL SISTEMA (ZULU Y LOCAL)
+    function updateClocks() {
         const now = new Date();
-        document.getElementById('sys-time').innerText = now.getUTCDate() + '-' + now.toLocaleString('en-US', {month: 'short'}).toUpperCase() + '-' + now.getUTCFullYear() + ' ' + String(now.getUTCHours()).padStart(2, '0') + ':' + String(now.getUTCMinutes()).padStart(2, '0');
-    }, 1000);
+        const zulu = now.getUTCDate().toString().padStart(2, '0') + '-' + now.toLocaleString('en-US', {month: 'short', timeZone: 'UTC'}).toUpperCase() + '-' + now.getUTCFullYear() + ' ' + String(now.getUTCHours()).padStart(2, '0') + ':' + String(now.getUTCMinutes()).padStart(2, '0') + 'Z';
+        const local = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+        
+        document.getElementById('sys-time-zulu').innerText = 'Hora ZULU (UTC): ' + zulu;
+        document.getElementById('sys-time-local').innerText = local;
+    }
+    setInterval(updateClocks, 1000);
+    updateClocks();
 
     const firebaseConfig = {
       apiKey: "AIzaSyADC1Wwcypek8g1gwOTcgqKskpqiTo0-oM",
@@ -474,7 +496,7 @@
             } else {
                 signOut(auth).then(() => {
                     localStorage.removeItem('teamLeaderLoginTime'); deactivateLeaderUI();
-                    showConfirm(`Access Denied: ${userEmail}`, null);
+                    showConfirm(`Acceso Denegado: ${userEmail} no autorizado.`, null);
                 });
             }
         } else { deactivateLeaderUI(); }
@@ -484,7 +506,7 @@
         isTeamLeader = true;
         document.body.classList.add('team-leader-mode');
         const btnToggle = document.getElementById('btn-mode-toggle');
-        btnToggle.innerText = "Disable Team Leader Mode";
+        btnToggle.innerText = "DESACTIVAR TEAM LEADER";
         btnToggle.classList.replace('btn-ifs-primary', 'btn-ifs-danger');
         render();
     }
@@ -493,7 +515,7 @@
         isTeamLeader = false;
         document.body.classList.remove('team-leader-mode');
         const btnToggle = document.getElementById('btn-mode-toggle');
-        btnToggle.innerText = "Enable Team Leader Mode";
+        btnToggle.innerText = "MODO TÉCNICO (CLICK PARA TL)";
         btnToggle.classList.replace('btn-ifs-danger', 'btn-ifs-primary');
         render();
     }
@@ -507,8 +529,8 @@
             if (document.activeElement.id !== 'in-fecha') document.getElementById('in-fecha').value = data.fecha || '';
             if (document.activeElement.id !== 'in-jefe') document.getElementById('in-jefe').value = data.jefe || '';
             
-            let fechaDisplay = data.fecha ? new Date(data.fecha + 'T00:00:00').toLocaleDateString('en-GB').toUpperCase() : "";
-            document.getElementById('display-header').innerText = `WORK PLAN: ${data.turno || ''} | ${fechaDisplay} | TL: ${data.jefe || 'UNASSIGNED'}`;
+            let fechaDisplay = data.fecha ? new Date(data.fecha + 'T00:00:00').toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase() : "";
+            document.getElementById('display-header').innerText = `${data.turno || 'SIN TURNO'} | ${fechaDisplay} | TL: ${data.jefe || 'SIN ASIGNAR'}`;
         }
     });
 
@@ -538,21 +560,21 @@
 
     function addTech() {
         const input = document.getElementById('in-new-tech'); const name = input.value.trim().toUpperCase();
-        if (!name) return; if (shiftTechs.includes(name)) return showConfirm("Tech already exists.", null);
+        if (!name) return; if (shiftTechs.includes(name)) return showConfirm("Este técnico ya está en la lista.", null);
         shiftTechs.push(name); shiftTechs.sort(); input.value = ''; saveTechs();
     }
-    function removeTech(index) { showConfirm(`Remove ${shiftTechs[index]}?`, () => { shiftTechs.splice(index, 1); saveTechs(); }); }
+    function removeTech(index) { showConfirm(`¿Eliminar a ${shiftTechs[index]} del turno?`, () => { shiftTechs.splice(index, 1); saveTechs(); }); }
 
     function renderTechPills() {
         const container = document.getElementById('tech-pills-container'); container.innerHTML = '';
         shiftTechs.forEach((tech, index) => {
-            container.innerHTML += `<div class="tech-pill"><span>${tech}</span> <span class="tech-remove" onclick="removeTech(${index})">x</span></div>`;
+            container.innerHTML += `<div class="tech-pill"><span>${tech}</span> <span class="tech-remove" onclick="removeTech(${index})">×</span></div>`;
         });
     }
 
     function updateTechFilterDropdown() {
         const select = document.getElementById('local-tech-filter');
-        select.innerHTML = '<option value="">-- Show All --</option>';
+        select.innerHTML = '<option value="">-- Mostrar Todos --</option>';
         shiftTechs.forEach(tech => { select.innerHTML += `<option value="${tech}" ${tech === currentTechFilter ? 'selected' : ''}>${tech}</option>`; });
     }
 
@@ -574,11 +596,11 @@
         else {
             let loginTime = localStorage.getItem('teamLeaderLoginTime');
             if (auth.currentUser && loginTime && (Date.now() - parseInt(loginTime)) < SESSION_EXPIRATION_MS) { activateLeaderUI(); } 
-            else { try { await signInWithPopup(auth, provider); } catch (error) { console.error("Auth error:", error); } }
+            else { try { await signInWithPopup(auth, provider); } catch (error) { console.error("Error de Autenticación:", error); } }
         }
     }
 
-    function clearAllData() { showConfirm("Wipe all Work Packages?", () => { avionesData = []; saveData(); }); }
+    function clearAllData() { showConfirm("⚠️ ESTO BORRARÁ TODAS LAS AERONAVES Y TAREAS. ¿Continuar?", () => { avionesData = []; saveData(); }); }
     function formatMatricula(input) { let val = input.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); if (val.length > 2) input.value = val.substring(0, 2) + '-' + val.substring(2, 5); else input.value = val; }
     function autoFormatTango(input) {
         let val = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -589,39 +611,43 @@
     async function handleTangoClick(tangoCode) { try { await navigator.clipboard.writeText(tangoCode); window.open(MAINTENIX_URL, '_blank'); } catch (err) { console.error('Copy Error:', err); } }
     function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
 
-    // Generador de filas de tabla para tareas (El cambio principal)
+    // Generador de filas de tabla para tareas
     function generateTaskRowHTML(avion, t, showPlaneReg = false, index = 1) {
-        let cleanDesc = t.desc; let tangoDisplay = '';
+        let cleanDesc = t.desc; let tangoDisplay = '-';
         if (t.tango) {
             cleanDesc = cleanDesc.replace(new RegExp(`\\[?${t.tango}\\]?`, 'gi'), '').trim().replace(/[- ]+$/, '').trim();
-            tangoDisplay = `<span class="tango-link" onclick="handleTangoClick('${t.tango}')">${t.tango}</span>`;
+            tangoDisplay = `<span class="tango-link" onclick="handleTangoClick('${t.tango}')" title="Copiar ID y abrir Maintenix">${t.tango}</span>`;
         }
 
         const trClass = `${t.done ? 'row-completed' : ''} ${t.priority ? 'row-priority' : ''} ${t.help ? 'row-help' : ''}`;
-        const planePrefix = showPlaneReg ? `[${avion.reg}] ` : '';
-        const priorityText = t.priority ? '<span style="color:var(--latam-red); font-weight:bold;">URGENT</span>' : (t.help ? '<span style="color:var(--help); font-weight:bold;">SUPPORT</span>' : '');
+        const planePrefix = showPlaneReg ? `<strong style="color:var(--ifs-blue);">[${avion.reg}]</strong> ` : '';
+        
+        let statusBadge = '<span class="badge" style="background:#888;">PENDIENTE</span>';
+        if (t.done) statusBadge = '<span class="badge badge-ok">COMPLETADA</span>';
+        else if (t.priority) statusBadge = '<span class="badge badge-urg">URGENTE</span>';
+        else if (t.help) statusBadge = '<span class="badge badge-sup">APOYO</span>';
 
         return `
             <tr class="${trClass}">
-                <td class="no-print" style="text-align:center;">
+                <td class="no-print" style="text-align:center; width:40px;">
                     <input type="checkbox" class="status-checkbox" ${t.done ? 'checked' : ''} onclick="toggleTask(${avion.id}, ${t.id})">
                 </td>
                 <td>
                     <strong>${planePrefix}${cleanDesc}</strong>
-                    ${t.comment ? `<br><span style="color:var(--comment); font-style:italic;">Note: ${t.comment}</span>` : ''}
+                    ${t.comment ? `<br><span style="color:var(--comment); font-style:italic;">↳ Nota: ${t.comment}</span>` : ''}
                 </td>
-                <td>${tangoDisplay}</td>
-                <td>${t.techs || 'UNASSIGNED'}</td>
-                <td>${t.done ? 'COMPLETE' : (priorityText || 'ACTIVE')}</td>
-                <td class="no-print">
+                <td style="width:100px;">${tangoDisplay}</td>
+                <td style="width:180px; font-weight:bold; color:#444;">${t.techs || 'SIN ASIGNAR'}</td>
+                <td style="width:90px; text-align:center;">${statusBadge}</td>
+                <td class="no-print" style="width:180px;">
                     <div class="action-cell">
                         <div class="leader-only leader-wrapper">
-                            <button class="btn-ifs" onclick="togglePriority(${avion.id}, ${t.id})">Urg</button>
+                            <button class="btn-ifs" onclick="togglePriority(${avion.id}, ${t.id})" title="Marcar Urgente">URG</button>
                         </div>
-                        <button class="btn-ifs" onclick="toggleHelp(${avion.id}, ${t.id})">Sup</button>
-                        <button class="btn-ifs" onclick="editTaskComment(${avion.id}, ${t.id})">Not</button>
+                        <button class="btn-ifs" onclick="toggleHelp(${avion.id}, ${t.id})" title="Solicitar Apoyo">AYUDA</button>
+                        <button class="btn-ifs" onclick="editTaskComment(${avion.id}, ${t.id})" title="Agregar Nota">NOTA</button>
                         <div class="leader-only leader-wrapper">
-                            <button class="btn-ifs" onclick="openEditTaskModal(${avion.id}, ${t.id})">Ed</button>
+                            <button class="btn-ifs" onclick="openEditTaskModal(${avion.id}, ${t.id})" title="Editar Tarea">EDIT</button>
                         </div>
                     </div>
                 </td>
@@ -630,7 +656,7 @@
     }
 
     function renderGroupedByTech(data, container) {
-        let grouped = {}; shiftTechs.forEach(tech => grouped[tech] = []); grouped["UNASSIGNED"] = [];
+        let grouped = {}; shiftTechs.forEach(tech => grouped[tech] = []); grouped["SIN ASIGNAR"] = [];
         data.forEach(avion => {
             if (avion.tareas) {
                 avion.tareas.forEach(t => {
@@ -638,7 +664,7 @@
                     if (t.techs) {
                         t.techs.split(' - ').forEach(tech => { if (grouped[tech] !== undefined) { grouped[tech].push({avion, task: t}); assigned = true; } });
                     }
-                    if (!assigned) { grouped["UNASSIGNED"].push({avion, task: t}); }
+                    if (!assigned) { grouped["SIN ASIGNAR"].push({avion, task: t}); }
                 });
             }
         });
@@ -648,22 +674,23 @@
             
             let html = `
                 <div class="wp-panel">
-                    <div class="wp-header"><div class="wp-title">Assigned To: ${tech}</div></div>
+                    <div class="wp-header"><div class="wp-title">👨‍🔧 Personal: ${tech}</div></div>
+                    <div class="table-responsive">
                     <table class="ifs-table">
                         <thead>
                             <tr>
-                                <th width="30" class="no-print">Done</th>
-                                <th>Task Description</th>
-                                <th width="90">ID</th>
-                                <th width="150">Labor</th>
-                                <th width="80">Status</th>
-                                <th width="120" class="no-print">Action</th>
+                                <th class="no-print">Check</th>
+                                <th>Descripción de Tarjeta (Task)</th>
+                                <th>Tango / ID</th>
+                                <th>Labor (Técnicos)</th>
+                                <th>Condición</th>
+                                <th class="no-print">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
             `;
             tasks.forEach(({avion, task}, idx) => { html += generateTaskRowHTML(avion, task, true, idx+1); });
-            html += `</tbody></table></div>`;
+            html += `</tbody></table></div></div>`;
             container.innerHTML += html;
         }
     }
@@ -682,56 +709,58 @@
 
         displayData.forEach(avion => {
             const wpDisplay = avion.wp ? `[${avion.wp}]` : '';
-            const timesDisplay = (avion.start || avion.end) ? `Time: ${avion.start || '--:--'} - ${avion.end || '--:--'}` : '';
+            const timesDisplay = (avion.start || avion.end) ? `Hora Est.: ${avion.start || '--:--'} a ${avion.end || '--:--'}` : '';
             const headerClass = avion.isActivity ? 'activity-header' : '';
             
             let avionActionBtns = avion.isActivity ? 
-                `<button class="btn-ifs" onclick="editAvionComment(${avion.id})">Note</button><div class="leader-only leader-wrapper"><button class="btn-ifs" onclick="openEditAvionModal(${avion.id})">Edit</button></div>` : 
-                `<button class="btn-ifs" onclick="editAvionComment(${avion.id})">Note</button><div class="leader-only leader-wrapper"><button class="btn-ifs btn-ifs-primary" onclick="openAddTaskModal(${avion.id})">Add Task</button><button class="btn-ifs" onclick="openEditAvionModal(${avion.id})">Edit</button></div>`;
+                `<button class="btn-ifs" onclick="editAvionComment(${avion.id})">📝 Nota</button><div class="leader-only leader-wrapper"><button class="btn-ifs" onclick="openEditAvionModal(${avion.id})">✏️ Editar Horas</button></div>` : 
+                `<button class="btn-ifs" onclick="editAvionComment(${avion.id})">📝 Nota</button><div class="leader-only leader-wrapper"><button class="btn-ifs btn-ifs-primary" onclick="openAddTaskModal(${avion.id})">➕ Añadir Tarjeta</button><button class="btn-ifs" onclick="openEditAvionModal(${avion.id})">✏️ Editar Info</button></div>`;
 
             let html = `
                 <div class="wp-panel">
                     <div class="wp-header ${headerClass}">
                         <div>
-                            <span class="wp-title">Aircraft: ${avion.reg} ${wpDisplay}</span>
-                            <span class="wp-details">Loc: ${avion.pos || 'N/A'} | ${timesDisplay}</span>
-                            ${avion.comment ? `<div class="wp-comment">Ref/Defect: ${avion.comment}</div>` : ''}
+                            <span class="wp-title">Aeronave / AC: ${avion.reg} ${wpDisplay}</span>
+                            <span class="wp-details">Loc: ${avion.pos || 'N/D'} | ${timesDisplay}</span>
+                            ${avion.comment ? `<div class="wp-comment">OBS / DEFECT: ${avion.comment}</div>` : ''}
                         </div>
                         <div class="toolbar-group no-print">${avionActionBtns}</div>
                     </div>
+                    <div class="table-responsive">
                     <table class="ifs-table">
                         <thead>
                             <tr>
-                                <th width="30" class="no-print">Done</th>
-                                <th>Task Description</th>
-                                <th width="90">ID</th>
-                                <th width="150">Labor</th>
-                                <th width="80">Status</th>
-                                <th width="120" class="no-print">Action</th>
+                                <th class="no-print">Check</th>
+                                <th>Descripción de Tarjeta (Task)</th>
+                                <th>Tango / ID</th>
+                                <th>Labor (Técnicos)</th>
+                                <th>Condición</th>
+                                <th class="no-print">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
             `;
             if(avion.tareas) { avion.tareas.forEach((t, idx) => { html += generateTaskRowHTML(avion, t, false, idx+1); }); }
-            html += `</tbody></table></div>`;
+            html += `</tbody></table></div></div>`;
             container.innerHTML += html;
         });
     }
 
     function toggleTask(aId, tId) {
         const avion = avionesData.find(a => a.id == aId); const tarea = avion.tareas.find(t => t.id == tId);
-        if (!tarea.done) { showConfirm("Certify task as Complete?", () => { tarea.help = false; tarea.priority = false; tarea.done = true; saveData(); }); } 
-        else { showConfirm("Re-open task?", () => { tarea.done = false; saveData(); }); }
+        if (!tarea.done) { showConfirm("¿Certificar esta tarea como COMPLETADA?", () => { tarea.help = false; tarea.priority = false; tarea.done = true; saveData(); }); } 
+        else { showConfirm("¿Reabrir esta tarea?", () => { tarea.done = false; saveData(); }); }
+        render(); // Para forzar refresh del checkbox
     }
 
     function togglePriority(aId, tId) {
         const tarea = avionesData.find(a => a.id == aId).tareas.find(t => t.id == tId);
-        if (tarea.done) return; showConfirm(`Toggle URGENT status?`, () => { tarea.priority = !tarea.priority; saveData(); });
+        if (tarea.done) return; showConfirm(`¿Modificar estado URGENTE?`, () => { tarea.priority = !tarea.priority; saveData(); });
     }
 
     function toggleHelp(aId, tId) {
         const tarea = avionesData.find(a => a.id == aId).tareas.find(t => t.id == tId);
-        if (tarea.done) return; showConfirm(`Toggle SUPPORT request?`, () => { tarea.help = !tarea.help; saveData(); });
+        if (tarea.done) return; showConfirm(`¿Modificar solicitud de APOYO?`, () => { tarea.help = !tarea.help; saveData(); });
     }
 
     function openAddAvionModal() {
@@ -745,7 +774,7 @@
         const reg = document.getElementById('add-ac-reg').value.toUpperCase().trim();
         let wp = document.getElementById('add-ac-wp').value.toUpperCase().trim();
         const pos = document.getElementById('add-ac-pos').value.toUpperCase().trim();
-        if (!reg || reg.length !== 6) return showConfirm("Registration format invalid.", null);
+        if (!reg || reg.length !== 6) return showConfirm("Formato de matrícula inválido (Ej: CC-BGM).", null);
         if (wp.length === 5 && !wp.startsWith('T00')) wp = 'T00' + wp;
         avionesData.push({ id: Date.now(), reg, isActivity: false, wp, pos, start: document.getElementById('add-ac-start').value, end: document.getElementById('add-ac-end').value, comment: document.getElementById('add-ac-comment').value.toUpperCase().trim(), tareas: [] });
         saveData(); closeModal('add-avion-modal');
@@ -758,10 +787,10 @@
 
     function saveAddActivity() {
         const title = document.getElementById('add-act-title').value.trim().toUpperCase();
-        if (!title) return showConfirm("Description required.", null);
+        if (!title) return showConfirm("Se requiere descripción de la actividad.", null);
         const techs = Array.from(document.querySelectorAll('.add-act-techs-cb:checked')).map(cb => cb.value).join(' - ');
         avionesData.push({ 
-            id: Date.now(), reg: "ACTIVITY", isActivity: true, wp: "", pos: "", start: document.getElementById('add-act-start').value, end: document.getElementById('add-act-end').value, comment: "", 
+            id: Date.now(), reg: "ACTIVIDAD EXTRA", isActivity: true, wp: "", pos: "", start: document.getElementById('add-act-start').value, end: document.getElementById('add-act-end').value, comment: "", 
             tareas: [{ id: Date.now() + 1, desc: title, tango: "", techs: techs, done: false, priority: false, help: false, comment: "" }] 
         });
         saveData(); closeModal('add-activity-modal');
@@ -781,7 +810,7 @@
         if (!avion.isActivity) {
             const reg = document.getElementById('edit-ac-reg').value.toUpperCase().trim();
             let wp = document.getElementById('edit-ac-wp').value.toUpperCase().trim();
-            if (!reg || reg.length !== 6) return showConfirm("Registration format invalid", null);
+            if (!reg || reg.length !== 6) return showConfirm("Formato de matrícula inválido.", null);
             if (wp.length === 5 && !wp.startsWith('T00')) wp = 'T00' + wp;
             avion.reg = reg; avion.wp = wp; avion.pos = document.getElementById('edit-ac-pos').value.toUpperCase().trim();
         }
@@ -789,12 +818,12 @@
         saveData(); closeModal('edit-avion-modal');
     }
 
-    function confirmDeleteAvion() { showConfirm("Delete WP and all tasks?", () => { avionesData = avionesData.filter(a => a.id != editCurrentAvionId); saveData(); closeModal('edit-avion-modal'); }); }
+    function confirmDeleteAvion() { showConfirm("¿Eliminar Aeronave/WP y TODAS sus tareas?", () => { avionesData = avionesData.filter(a => a.id != editCurrentAvionId); saveData(); closeModal('edit-avion-modal'); }); }
 
     function buildTechGrid(containerId, selectedTechsString = "") {
         const container = document.getElementById(containerId); container.innerHTML = '';
         const currentTechs = selectedTechsString ? selectedTechsString.split(' - ') : [];
-        if (shiftTechs.length === 0) { container.innerHTML = '<i>No Techs</i>'; } 
+        if (shiftTechs.length === 0) { container.innerHTML = '<i style="font-size:10px;">No hay técnicos asignados al turno. Añade en el Panel.</i>'; } 
         else { shiftTechs.forEach(tech => { container.innerHTML += `<label class="tech-checkbox-label"><input type="checkbox" class="${containerId}-cb" value="${tech}" ${currentTechs.includes(tech) ? "checked" : ""}> ${tech}</label>`; }); }
     }
 
@@ -806,7 +835,7 @@
     function saveAddTask() {
         const avion = avionesData.find(a => a.id == editCurrentAvionId); if(!avion.tareas) avion.tareas = [];
         const desc = document.getElementById('add-task-desc').value.trim().toUpperCase(); let tango = document.getElementById('add-task-tango').value.trim().toUpperCase();
-        if (!desc) return showConfirm("Description required.", null);
+        if (!desc) return showConfirm("La descripción de la tarea es obligatoria.", null);
         const techs = Array.from(document.querySelectorAll('.add-task-techs-cb:checked')).map(cb => cb.value).join(' - ');
         avion.tareas.push({ id: Date.now(), desc, tango, techs, done: false, priority: false, help: false, comment: "" });
         saveData(); closeModal('add-task-modal');
@@ -822,14 +851,14 @@
         const avion = avionesData.find(a => a.id == editCurrentAvionId); const tarea = avion.tareas.find(t => t.id == editCurrentTaskId);
         const desc = document.getElementById('edit-task-desc').value.trim().toUpperCase();
         let tango = ""; if (!avion.isActivity) { tango = document.getElementById('edit-task-tango').value.trim().toUpperCase(); }
-        if (!desc) return showConfirm("Description required.", null);
+        if (!desc) return showConfirm("La descripción de la tarea es obligatoria.", null);
         tarea.desc = desc; tarea.tango = tango; tarea.techs = Array.from(document.querySelectorAll('.edit-task-techs-cb:checked')).map(cb => cb.value).join(' - ');
         saveData(); closeModal('edit-task-modal');
     }
 
-    function confirmDeleteTask() { showConfirm("Delete task?", () => { const avion = avionesData.find(a => a.id == editCurrentAvionId); avion.tareas = avion.tareas.filter(t => t.id != editCurrentTaskId); saveData(); closeModal('edit-task-modal'); }); }
-    function editAvionComment(id) { const avion = avionesData.find(a => a.id == id); showPromptModal("Remarks/Defect", avion.comment, (val) => { avion.comment = val; saveData(); }); }
-    function editTaskComment(aId, tId) { const tarea = avionesData.find(a => a.id == aId).tareas.find(t => t.id == tId); showPromptModal("Task Note", tarea.comment, (val) => { tarea.comment = val; saveData(); }); }
+    function confirmDeleteTask() { showConfirm("¿Eliminar esta Tarjeta/Tarea de forma permanente?", () => { const avion = avionesData.find(a => a.id == editCurrentAvionId); avion.tareas = avion.tareas.filter(t => t.id != editCurrentTaskId); saveData(); closeModal('edit-task-modal'); }); }
+    function editAvionComment(id) { const avion = avionesData.find(a => a.id == id); showPromptModal("Ingresar Reporte/Observación (Avión)", avion.comment, (val) => { avion.comment = val; saveData(); }); }
+    function editTaskComment(aId, tId) { const tarea = avionesData.find(a => a.id == aId).tareas.find(t => t.id == tId); showPromptModal("Ingresar Nota (Tarea)", tarea.comment, (val) => { tarea.comment = val; saveData(); }); }
 
     Object.assign(window, { updateHeader, addTech, removeTech, toggleMode, clearAllData, formatMatricula, autoFormatTango, handleTangoClick, closeModal, toggleTask, togglePriority, toggleHelp, openAddAvionModal, saveAddAvion, openAddActivityModal, saveAddActivity, openEditAvionModal, saveEditAvion, confirmDeleteAvion, openAddTaskModal, saveAddTask, openEditTaskModal, saveEditTask, confirmDeleteTask, editAvionComment, editTaskComment, closeConfirmModal, closePromptModal, changeViewMode, applyLocalFilter, resetLocalFilter, handleTaskDescInput });
 </script>
